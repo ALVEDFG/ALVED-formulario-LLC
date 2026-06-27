@@ -1,41 +1,41 @@
 {
-  "name": "Alved Financial Group — Formación de Compañías",
-  "short_name": "Alved Forms",
-  "description": "Formulario de formación de compañías LLC, Corporación y Nonprofit con Alved Financial Group.",
-  "start_url": "/alved-company-form.html",
-  "scope": "/",
-  "display": "standalone",
-  "orientation": "portrait",
-  "background_color": "#1A1F6B",
-  "theme_color": "#1A1F6B",
-  "lang": "es",
-  "icons": [
-    { "src": "favicon-32.png",  "sizes": "32x32",   "type": "image/png", "purpose": "any" },
-    { "src": "icon-192.png",    "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
-    { "src": "icon-512.png",    "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
-  ],
-  "screenshots": [
-    {
-      "src": "empresario-analizando-graficos1.jpg",
-      "sizes": "1080x1920",
-      "type": "image/jpeg",
-      "form_factor": "narrow",
-      "label": "Formulario de Formación"
-    }
-  ],
-  "categories": ["finance", "business"],
-  "shortcuts": [
-    {
-      "name": "Iniciar Formulario",
-      "short_name": "Formulario",
-      "url": "/alved-company-form.html",
-      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
-    },
-    {
-      "name": "Ver Paquetes",
-      "short_name": "Paquetes",
-      "url": "/alved-company-formation.html",
-      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
-    }
-  ]
+    "name": "Alved Financial Group — Formación de Compañías",
+    "short_name": "Alved Forms",
+    "description": "Formulario de formación de compañías LLC, Corporación y Nonprofit con Alved Financial Group.",
+    "start_url": "/ALVED-formulario-LLC/alved-company-formation.html",
+    "scope": "/ALVED-formulario-LLC/",
+    "display": "standalone",
+    "orientation": "portrait",
+    "background_color": "#1A1F6B",
+    "theme_color": "#1A1F6B",
+    "lang": "es",
+    "icons": [
+          { "src": "favicon-32.png", "sizes": "32x32",   "type": "image/png", "purpose": "any" },
+          { "src": "icon-192.png",   "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+          { "src": "icon-512.png",   "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+    ],
+    "screenshots": [
+          {
+                  "src": "empresario-analizando-graficos1.jpg",
+                  "sizes": "1080x1920",
+                  "type": "image/jpeg",
+                  "form_factor": "narrow",
+                  "label": "Formación de Compañías"
+          }
+    ],
+    "categories": ["finance", "business"],
+    "shortcuts": [
+          {
+                  "name": "Ver Paquetes",
+                  "short_name": "Paquetes",
+                  "url": "/ALVED-formulario-LLC/alved-company-formation.html",
+                  "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+          },
+          {
+                  "name": "Iniciar Formulario",
+                  "short_name": "Formulario",
+                  "url": "/ALVED-formulario-LLC/index.html",
+                  "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+          }
+    ]
 }
