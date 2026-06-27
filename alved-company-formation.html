@@ -173,10 +173,11 @@
     display: block; text-align: center; padding: 13px; border-radius: 8px;
     font-weight: 700; font-size: .92rem; transition: filter .2s, transform .2s; margin-top: 20px;
   }
-  .pkg.basic .pkg-cta    { background: var(--offwh); color: var(--navy); border: 1.5px solid var(--light); }
-  .pkg.featured .pkg-cta  { background: var(--bright); color: #fff; }
-  .pkg.vip .pkg-cta       { background: linear-gradient(135deg, var(--navy), var(--royal)); color: #fff; }
-  .pkg-cta:hover { filter: brightness(1.08); transform: translateY(-1px); }
+  .pkg.basic .pkg-cta    { background: var(--bright); color: #fff; border: 1.5px solid var(--bright); }
+  .pkg.featured .pkg-cta  { background: var(--bright); color: #fff; border: 1.5px solid var(--bright); }
+  .pkg.vip .pkg-cta       { background: var(--bright); color: #fff; border: 1.5px solid var(--bright); }
+  .pkg-cta:hover { filter: brightness(1.1); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(26,115,232,.4); }
+  .pkg-cta:active { box-shadow: 0 0 0 4px rgba(26,115,232,.45); filter: brightness(0.95); transform: translateY(0); }
 
   /* ── PROCESS ── */
   .process-steps { display: flex; flex-direction: column; gap: 0; max-width: 780px; margin: 0 auto; }
