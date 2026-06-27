@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Formulario de Formación | Alved Financial Group</title>
 
 <!-- PWA Meta Tags -->
@@ -17,7 +17,7 @@
 <meta name="description" content="Forma tu LLC, Corporación o Nonprofit con Alved Financial Group. Proceso 100% en línea.">
 <meta property="og:title" content="Formulario de Formación | Alved Financial Group">
 <meta property="og:description" content="Inicia el proceso de formación de tu empresa hoy.">
-<meta property="og:image" content="icon-512.png">
+<meta property="og:image" content="empresario-analizando-graficos1.jpg">
 <meta property="og:type" content="website">
 
 <!-- Icons -->
@@ -645,7 +645,7 @@
     <label>Tipo de Negocio / Actividad Principal <span class="req">*</span> <span class="opt">(máx. 2 opciones)</span></label>
     <div class="naics-wrap">
       <input type="text" id="naics-search" class="naics-input" placeholder="Busca tu tipo de negocio (ej: restaurante, construcción, consultoría...)"
-             autocomplete="off" oninput="filterNAICS(this.value)" onfocus="openNAICS()">
+             autocomplete="off" oninput="filterNAICS(this.value)" onfocus="openNAICS()" onblur="closeNAICSDelay()">
       <div class="naics-dropdown" id="naics-dropdown"></div>
     </div>
     <div class="naics-tags" id="naics-tags"></div>
@@ -755,8 +755,8 @@
 
   <hr class="divider">
 
-  <!-- S-Corp -->
-  <div class="check-group">
+  <!-- S-Corp (oculto para Nonprofit - Fix #2) -->
+  <div id="scorp-addon-wrapper" class="check-group">
     <label class="check-item">
       <input type="checkbox" name="scorp_addon" id="scorp_cb" onchange="updateEstimate()">
       <span><strong>Agregar elección de S-Corporation (+$97)</strong> — Radicación del Form 2553 con el IRS para reducir impuestos de self-employment. Recomendado para LLCs y Corporations con ingresos anuales mayores a $40,000.</span>
@@ -809,8 +809,8 @@
         </div>
         <div class="field">
           <label>SSN / ITIN / Pasaporte <span class="req">*</span></label>
-          <input type="text" name="owner1_id" id="owner1_id" placeholder="Solo números (9 dígitos) o N° de pasaporte"
-                 required maxlength="20" oninput="detectIdType(this,'owner1_id_badge','owner1_id_hint')">
+          <input type="password" name="owner1_id" id="owner1_id" placeholder="Solo números (9 dígitos) o N° de pasaporte"
+                 autocomplete="off" required maxlength="20" oninput="detectIdType(this,'owner1_id_badge','owner1_id_hint')">
           <span class="id-badge" id="owner1_id_badge"></span>
           <span class="hint" id="owner1_id_hint">Información confidencial y segura. SSN/ITIN: exactamente 9 dígitos.</span>
         </div>
@@ -1075,7 +1075,7 @@
 
 <!-- WA -->
 <a href="https://wa.me/13053052194?text=Hola%2C%20tengo%20preguntas%20sobre%20la%20formaci%C3%B3n%20de%20mi%20compa%C3%B1%C3%ADa"
-   target="_blank" class="wa-btn">
+   target="_blank" class="wa-btn" aria-label="Contactar por WhatsApp">
   <div class="wa-tooltip">¿Tienes dudas? Escríbenos</div>
   <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
     <path d="M16 .5C7.44.5.5 7.44.5 16c0 2.83.74 5.49 2.04 7.8L.5 31.5l7.93-2.08A15.45 15.45 0 0016 31.5C24.56 31.5 31.5 24.56 31.5 16S24.56.5 16 .5zm7.85 21.57c-.33.93-1.93 1.78-2.65 1.9-.68.11-1.54.16-2.49-.16-.57-.19-1.31-.44-2.25-.86-3.96-1.71-6.55-5.7-6.75-5.97-.2-.27-1.63-2.17-1.63-4.14 0-1.97 1.03-2.94 1.4-3.34.37-.4.8-.5 1.07-.5.27 0 .54 0 .77.01.25.01.58-.1.91.69.33.8 1.13 2.77 1.23 2.97.1.2.17.43.03.7-.13.27-.2.43-.4.67-.2.23-.42.52-.6.7-.2.2-.4.4-.17.79.23.38 1.03 1.7 2.21 2.76 1.52 1.35 2.8 1.77 3.19 1.97.38.2.6.17.82-.1.23-.27.97-1.13 1.23-1.52.27-.38.53-.32.9-.19.37.13 2.33 1.1 2.73 1.3.4.2.67.3.77.47.1.17.1.97-.23 1.9z"/>
@@ -1482,10 +1482,14 @@ function showPkgDetail(type) {
 function updateEstimate() {
   const entity   = document.getElementById('entity_type').value;
   const state    = document.getElementById('state_select').value;
-  const scorp    = document.getElementById('scorp_cb').checked;
+  const scorpWrapper = document.getElementById('scorp-addon-wrapper');
+  const isNonprofit   = entity === 'Nonprofit';
+  if (scorpWrapper) scorpWrapper.style.display = isNonprofit ? 'none' : '';
+  if (isNonprofit) document.getElementById('scorp_cb').checked = false;
+  const scorp    = isNonprofit ? false : document.getElementById('scorp_cb').checked;
   const banner   = document.getElementById('estimate-banner');
 
-  if (!selectedPkg || !entity || !state || entity === 'Consulta' || state === 'Otro') {
+  if (!selectedPkg || !entity || !state || entity === 'Consulta') {
     banner.classList.remove('show'); return;
   }
 
@@ -1495,16 +1499,22 @@ function updateEstimate() {
   const stateFee  = stFees ? (stFees[entityKey] || null) : null;
   const scorpFee  = scorp ? 97 : 0;
 
-  if (stateFee === null) { banner.classList.remove('show'); return; }
+  if (stateFee === null) {
+    // FIX #13: Still show addon costs even when state fee is unknown (Otro)
+    if (!scorpFee && !raFee) { banner.classList.remove('show'); return; }
+    stateFee = 0; // Unknown state fee, show $0 + addon costs
+  }
 
-  const total = pkgPrice + stateFee + scorpFee;
+  const raAlved = document.querySelector('input[name="registered_agent"]:checked')?.value;
+  const raFee = (selectedPkg === 'basic' && raAlved === 'Alved Financial Group') ? 97 : 0;
+  const total = pkgPrice + stateFee + scorpFee + raFee;
 
   const pkgLabels  = { basic:'Básico $247', premium:'Premium $397', vip:'VIP $997' };
   const scorpLabel = scorp ? ' + S-Corp $97' : '';
 
   document.getElementById('est-total').textContent = '$' + total.toLocaleString();
   document.getElementById('est-break').textContent =
-    'Paquete ' + pkgLabels[selectedPkg] + ' + Fee ' + state + ' $' + stateFee + scorpLabel;
+    'Paquete ' + pkgLabels[selectedPkg] + ' + Fee ' + state + ' 
   banner.classList.add('show');
 }
 
@@ -1655,6 +1665,15 @@ function filterNAICS(q) {
 function openNAICS() {
   filterNAICS(document.getElementById('naics-search').value);
   positionNAICSDropdown();
+  // FIX #7: Reposition dropdown on scroll (mobile)
+  window._naicsScrollHandler = function() { positionNAICSDropdown(); };
+  window.addEventListener('scroll', window._naicsScrollHandler, { passive: true });
+}
+function closeNAICSScroll() {
+  if (window._naicsScrollHandler) {
+    window.removeEventListener('scroll', window._naicsScrollHandler);
+    window._naicsScrollHandler = null;
+  }
 }
 
 function positionNAICSDropdown() {
@@ -1674,6 +1693,7 @@ function positionNAICSDropdown() {
 }
 
 function closeNAICSDelay() {
+  closeNAICSScroll();
   setTimeout(() => document.getElementById('naics-dropdown').classList.remove('open'), 350);
 }
 
@@ -1711,7 +1731,7 @@ function renderNAICSTags() {
   const cont = document.getElementById('naics-tags');
   cont.innerHTML = naicsSelected.map(n =>
     '<div class="naics-tag"><span>' + n.label + ' · ' + n.code + '</span>' +
-    '<span class="naics-rm" onmousedown="removeNAICS(\'' + n.code + '\')">×</span></div>'
+    '<span class="naics-rm" onmousedown="removeNAICS(\'' + n.code + '\')" ontouchend="removeNAICS(\'' + n.code + '\')">×</span></div>'
   ).join('');
 }
 
@@ -1852,7 +1872,48 @@ async function submitForm(e) {
   const pkg = document.querySelector('input[name="package"]:checked');
   if (!pkg) { alert('Por favor selecciona un paquete para continuar.'); return; }
 
-  if (naicsSelected.length === 0) {
+  // FIX #1: Validaciones de campos obligatorios faltantes
+  const _companyName = document.querySelector('input[name="name1"]');
+  if (!_companyName || !_companyName.value.trim()) {
+    alert('Por favor ingresa el nombre de la empresa (Opción 1).');
+    _companyName && _companyName.scrollIntoView({behavior:'smooth', block:'center'});
+    _companyName && _companyName.focus(); return;
+  }
+  const _ownerFirst = document.querySelector('input[name="owner1_first"]');
+  const _ownerLast  = document.querySelector('input[name="owner1_last"]');
+  if (!_ownerFirst || !_ownerFirst.value.trim() || !_ownerLast || !_ownerLast.value.trim()) {
+    alert('Por favor ingresa el nombre completo del propietario principal.');
+    (_ownerFirst || _ownerLast).scrollIntoView({behavior:'smooth', block:'center'});
+    (_ownerFirst || _ownerLast).focus(); return;
+  }
+  const _contactEmail = document.querySelector('input[name="contact_email"]');
+  if (!_contactEmail || !_contactEmail.value.trim()) {
+    alert('Por favor ingresa el email de contacto.');
+    _contactEmail && _contactEmail.scrollIntoView({behavior:'smooth', block:'center'});
+    _contactEmail && _contactEmail.focus(); return;
+  }
+  const _contactPhone = document.querySelector('input[name="contact_phone"]');
+  if (!_contactPhone || !_contactPhone.value.trim()) {
+    alert('Por favor ingresa el teléfono de contacto.');
+    _contactPhone && _contactPhone.scrollIntoView({behavior:'smooth', block:'center'});
+    _contactPhone && _contactPhone.focus(); return;
+  }
+
+  // FIX #12: Validar que los porcentajes de participación sumen 100%
+  const _pctInputs = document.querySelectorAll('input[name$="_pct"]');
+  if (_pctInputs.length > 0) {
+    const _pctTotal = Array.from(_pctInputs).reduce((sum, el) => {
+      const v = parseFloat(el.value.replace('%','').trim()) || 0;
+      return sum + v;
+    }, 0);
+    if (Math.round(_pctTotal) !== 100) {
+      alert('Los porcentajes de participación deben sumar 100%. Actualmente suman ' + _pctTotal.toFixed(1) + '%.');
+      _pctInputs[0].scrollIntoView({behavior:'smooth', block:'center'});
+      _pctInputs[0].focus(); return;
+    }
+  }
+
+    if (naicsSelected.length === 0) {
     alert('Por favor selecciona al menos un tipo de negocio (actividad principal).');
     document.getElementById('naics-search').focus(); return;
   }
@@ -1877,6 +1938,8 @@ async function submitForm(e) {
   const fd   = new FormData(form);
   const data = {};
   fd.forEach((val, key) => { data[key] = val; });
+  // FIX #3: Ensure owner title is explicitly captured
+  data.owner1_title = document.getElementById('owner1_title')?.value || data.owner1_title || '';
 
   // ── Ensamblar dirección del negocio ──
   data.business_address = [
@@ -2015,11 +2078,620 @@ async function submitForm(e) {
 <script>
 /* ── Service Worker Registration ── */
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js').catch(() => {
-      /* Silently fail if SW not available (file:// protocol) */
+  const _swRegister = () => navigator.serviceWorker.register('./sw.js').catch(() => { /* SW unavailable */ });
+  if (document.readyState === 'complete') {
+    _swRegister();
+  } else {
+    window.addEventListener('load', _swRegister);
+    document.addEventListener('DOMContentLoaded', _swRegister);
+  }
+}
+
+/* ── PWA Install Prompt (Android / Chrome) ── */
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  if (!localStorage.getItem('pwa-dismissed')) {
+    setTimeout(() => { document.getElementById('pwa-banner').style.display = 'block'; }, 3000);
+  }
+});
+
+document.getElementById('pwa-install-btn').addEventListener('click', async () => {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  const { outcome } = await deferredPrompt.userChoice;
+  deferredPrompt = null;
+  document.getElementById('pwa-banner').style.display = 'none';
+  if (outcome === 'accepted') localStorage.setItem('pwa-installed', '1');
+});
+
+window.addEventListener('appinstalled', () => {
+  document.getElementById('pwa-banner').style.display = 'none';
+  localStorage.setItem('pwa-installed', '1');
+});
+
+/* ── iOS Safari Install Hint ── */
+const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+const isStandalone = window.navigator.standalone === true;
+const dismissed = localStorage.getItem('pwa-dismissed');
+if (isIOS && !isStandalone && !dismissed) {
+  setTimeout(() => { document.getElementById('ios-banner').style.display = 'block'; }, 4000);
+}
+</script>
+</body>
+</html>
+ + stateFee + scorpLabel + (raFee ? ' + RA Alved $97/año' : '');
+  banner.classList.add('show');
+}
+
+// ══════════════════════════════════════════════════════
+//  TITLE OPTIONS BY ENTITY
+// ══════════════════════════════════════════════════════
+function updateTitleOptions() {
+  const entity = document.getElementById('entity_type').value;
+  updateOwnerTitleSelect('owner1_title', entity);
+}
+
+function updateOwnerTitleSelect(selectId, entity) {
+  const sel = document.getElementById(selectId);
+  if (!sel) return;
+  const opts = TITLE_OPTIONS[entity] || [];
+  sel.innerHTML = '<option value="">— Selecciona —</option>';
+  opts.forEach(t => {
+    const o = document.createElement('option');
+    o.value = t; o.textContent = t;
+    sel.appendChild(o);
+  });
+}
+
+// ══════════════════════════════════════════════════════
+//  SSN / ITIN / PASSPORT DETECTION
+// ══════════════════════════════════════════════════════
+function detectIdType(input, badgeId, hintId) {
+  const val  = input.value.replace(/[^0-9a-zA-Z]/g, '');
+  const badge = document.getElementById(badgeId);
+  const hint  = document.getElementById(hintId);
+
+  badge.className = 'id-badge';
+
+  if (/^\d+$/.test(val)) {
+    if (val.length < 9) {
+      input.classList.remove('is-valid','is-invalid');
+      hint.textContent = val.length + ' de 9 dígitos requeridos.';
+      hint.className = 'hint';
+    } else if (val.length === 9) {
+      input.classList.add('is-valid'); input.classList.remove('is-invalid');
+      if (val[0] === '9') {
+        badge.textContent = 'ITIN detectado'; badge.classList.add('itin');
+        hint.textContent  = 'ITIN válido (comienza con 9).';
+      } else {
+        badge.textContent = 'SSN detectado'; badge.classList.add('ssn');
+        hint.textContent  = 'SSN válido.';
+      }
+      hint.className = 'hint ok';
+    } else {
+      input.classList.add('is-invalid'); input.classList.remove('is-valid');
+      hint.textContent = 'SSN/ITIN debe tener exactamente 9 dígitos.';
+      hint.className = 'hint err';
+    }
+  } else if (val.length > 0) {
+    badge.textContent = 'Pasaporte'; badge.classList.add('pass');
+    input.classList.add('is-valid'); input.classList.remove('is-invalid');
+    hint.textContent  = 'Número de pasaporte registrado.';
+    hint.className    = 'hint ok';
+  } else {
+    input.classList.remove('is-valid','is-invalid');
+    hint.textContent = 'SSN/ITIN: exactamente 9 dígitos. Pasaporte: letras y números.';
+    hint.className   = 'hint';
+  }
+}
+
+// ══════════════════════════════════════════════════════
+//  ADDRESS VALIDATIONS
+// ══════════════════════════════════════════════════════
+function validateApt2(inputId, hintId) {
+  const val  = document.getElementById(inputId).value.trim();
+  const hint = document.getElementById(hintId);
+  if (!hint) return;
+  if (val.length > 0 && val.length < 2) {
+    hint.textContent  = 'Por favor completa el número de apartamento/unidad.';
+    hint.className    = 'hint err';
+  } else if (val.length >= 2) {
+    hint.textContent  = 'Unidad confirmada: ' + val;
+    hint.className    = 'hint ok';
+  } else {
+    hint.textContent  = '';
+    hint.className    = 'hint';
+  }
+}
+
+function validateZip(input) {
+  const val = input.value.replace(/[^0-9-]/g,'');
+  input.value = val;
+  if (/^\d{5}(-\d{4})?$/.test(val)) {
+    input.classList.add('is-valid'); input.classList.remove('is-invalid');
+  } else if (val.length > 0) {
+    input.classList.add('is-invalid'); input.classList.remove('is-valid');
+  } else {
+    input.classList.remove('is-valid','is-invalid');
+  }
+}
+
+// ══════════════════════════════════════════════════════
+//  MAILING ADDRESS TOGGLE
+// ══════════════════════════════════════════════════════
+function toggleMailing() {
+  const chk = document.getElementById('same_mailing');
+  document.getElementById('mailing-block').style.display = chk.checked ? 'none' : 'block';
+}
+
+// ══════════════════════════════════════════════════════
+//  CONTACT TYPE
+// ══════════════════════════════════════════════════════
+function selectContactAs(type) {
+  document.querySelectorAll('.cs-opt').forEach(el => el.classList.remove('selected'));
+  document.getElementById('cs-' + type).classList.add('selected');
+  document.getElementById('third-party-block').style.display = type === 'third' ? 'block' : 'none';
+}
+
+// ══════════════════════════════════════════════════════
+//  REGISTERED AGENT
+// ══════════════════════════════════════════════════════
+function selectRA(type) {
+  document.querySelectorAll('.ra-opt').forEach(el => el.classList.remove('selected'));
+  document.getElementById('ra-' + type).classList.add('selected');
+}
+
+// ══════════════════════════════════════════════════════
+//  NAICS SELECTOR
+// ══════════════════════════════════════════════════════
+function filterNAICS(q) {
+  const dd    = document.getElementById('naics-dropdown');
+  const items = q.trim().length === 0
+    ? NAICS_DATA
+    : NAICS_DATA.filter(n => n.label.toLowerCase().includes(q.toLowerCase()) || n.code.includes(q));
+
+  dd.innerHTML = '';
+  items.slice(0, 40).forEach(n => {
+    const alreadySelected = naicsSelected.some(s => s.code === n.code);
+    const maxed = naicsSelected.length >= 2 && !alreadySelected;
+    const div = document.createElement('div');
+    div.className = 'naics-item' + (maxed ? ' disabled' : '');
+    div.innerHTML = '<span>' + n.label + '</span><span class="naics-code">' + n.code + '</span>';
+    if (!maxed) {
+      div.onmousedown = (e) => { e.preventDefault(); addNAICS(n); };
+      div.addEventListener('touchend', (e) => { e.preventDefault(); e.stopPropagation(); addNAICS(n); });
+    }
+    dd.appendChild(div);
+  });
+  dd.classList.add('open');
+  positionNAICSDropdown();
+}
+
+function openNAICS() {
+  filterNAICS(document.getElementById('naics-search').value);
+  positionNAICSDropdown();
+  // FIX #7: Reposition dropdown on scroll (mobile)
+  window._naicsScrollHandler = function() { positionNAICSDropdown(); };
+  window.addEventListener('scroll', window._naicsScrollHandler, { passive: true });
+}
+function closeNAICSScroll() {
+  if (window._naicsScrollHandler) {
+    window.removeEventListener('scroll', window._naicsScrollHandler);
+    window._naicsScrollHandler = null;
+  }
+}
+
+function positionNAICSDropdown() {
+  if (window.innerWidth > 600) return;
+  const input = document.getElementById('naics-search');
+  const dd = document.getElementById('naics-dropdown');
+  if (!input || !dd) return;
+  const rect = input.getBoundingClientRect();
+  const spaceBelow = window.innerHeight - rect.bottom;
+  if (spaceBelow >= 120) {
+    dd.style.top = rect.bottom + 'px';
+    dd.style.bottom = 'auto';
+  } else {
+    dd.style.bottom = (window.innerHeight - rect.top) + 'px';
+    dd.style.top = 'auto';
+  }
+}
+
+function closeNAICSDelay() {
+  closeNAICSScroll();
+  setTimeout(() => document.getElementById('naics-dropdown').classList.remove('open'), 350);
+}
+
+// Cierra el dropdown NAICS al tocar/click fuera de él
+document.addEventListener('touchstart', function(e) {
+  const wrap = document.querySelector('.naics-wrap');
+  if (wrap && !wrap.contains(e.target)) {
+    document.getElementById('naics-dropdown').classList.remove('open');
+  }
+});
+document.addEventListener('mousedown', function(e) {
+  const wrap = document.querySelector('.naics-wrap');
+  if (wrap && !wrap.contains(e.target)) {
+    document.getElementById('naics-dropdown').classList.remove('open');
+  }
+});
+
+function addNAICS(n) {
+  if (naicsSelected.length >= 2) return;
+  if (naicsSelected.some(s => s.code === n.code)) return;
+  naicsSelected.push(n);
+  renderNAICSTags();
+  document.getElementById('naics-search').value = '';
+  document.getElementById('naics-dropdown').classList.remove('open');
+  updateNAICSHidden();
+}
+
+function removeNAICS(code) {
+  naicsSelected = naicsSelected.filter(s => s.code !== code);
+  renderNAICSTags();
+  updateNAICSHidden();
+}
+
+function renderNAICSTags() {
+  const cont = document.getElementById('naics-tags');
+  cont.innerHTML = naicsSelected.map(n =>
+    '<div class="naics-tag"><span>' + n.label + ' · ' + n.code + '</span>' +
+    '<span class="naics-rm" onmousedown="removeNAICS(\'' + n.code + '\')" ontouchend="removeNAICS(\'' + n.code + '\')">×</span></div>'
+  ).join('');
+}
+
+function updateNAICSHidden() {
+  document.getElementById('business_naics_hidden').value =
+    naicsSelected.map(n => n.label + ' [' + n.code + ']').join(' | ');
+}
+
+// ══════════════════════════════════════════════════════
+//  ADD / REMOVE OWNERS
+// ══════════════════════════════════════════════════════
+let ownerCount = 1;
+
+function addOwner() {
+  ownerCount++;
+  const n   = ownerCount;
+  const div = document.createElement('div');
+  div.className = 'owner-block';
+  div.id        = 'owner-' + n;
+
+  const entity = document.getElementById('entity_type').value;
+  const titleOpts = (TITLE_OPTIONS[entity] || []).map(t => '<option>' + t + '</option>').join('');
+
+  div.innerHTML = `
+    <div class="owner-block-title">
+      <span>👤 Socio / Co-propietario ${n}</span>
+      <button type="button" class="rm-owner" onclick="removeOwner(${n})">✕ Eliminar</button>
+    </div>
+    <div class="form-grid" style="gap:12px">
+      <div class="field"><label>Primer Nombre</label><input type="text" name="owner${n}_first" placeholder="Nombre"></div>
+      <div class="field"><label>Segundo Nombre <span class="opt">(si aplica)</span></label><input type="text" name="owner${n}_middle" placeholder="Middle name"></div>
+      <div class="field"><label>Apellido(s)</label><input type="text" name="owner${n}_last" placeholder="Apellido"></div>
+      <div class="field"><label>% de Participación</label><input type="text" name="owner${n}_pct" placeholder="Ej: 40%"></div>
+      <div class="field"><label>Título / Cargo</label>
+        <select name="owner${n}_title"><option value="">— Selecciona —</option>${titleOpts}</select></div>
+      <div class="field"><label>SSN / ITIN / Pasaporte</label>
+        <input type="text" name="owner${n}_id" id="owner${n}_id" placeholder="9 dígitos o pasaporte" maxlength="20"
+               oninput="detectIdType(this,'owner${n}_id_badge','owner${n}_id_hint')">
+        <span class="id-badge" id="owner${n}_id_badge"></span>
+        <span class="hint" id="owner${n}_id_hint">SSN/ITIN: exactamente 9 dígitos.</span></div>
+      <div class="field"><label>Fecha de Nacimiento</label><input type="date" name="owner${n}_dob"></div>
+      <div class="field"><label>Estatus Migratorio</label>
+        <select name="owner${n}_usstatus">
+          <option value="">— Selecciona —</option>
+          <option>Ciudadano americano</option>
+          <option>Residente permanente (Green Card)</option>
+          <option>Visa de trabajo (H1B, L1, O1, TN)</option>
+          <option>Visa de estudiante (F1 / OPT)</option>
+          <option>Visa de inversionista (E2 / EB-5)</option>
+          <option>Visa de turista / visitante (B1/B2)</option>
+          <option>Sin estatus migratorio / ITIN holder</option>
+          <option>Otro</option>
+        </select></div>
+      <div class="field"><label>Teléfono</label><input type="tel" name="owner${n}_phone" placeholder="+1 (000) 000-0000"></div>
+    </div>
+    <div style="margin-top:14px">
+      <div class="addr-block">
+        <div class="addr-title">🏠 Dirección Residencial</div>
+        <div class="form-grid c1" style="gap:10px">
+          <div class="field"><label>País</label><input type="text" name="owner${n}_country" value="USA" placeholder="USA, Colombia..."></div>
+          <div class="field"><label>Dirección (Línea 1)</label><input type="text" name="owner${n}_addr1" placeholder="Calle y número"></div>
+          <div class="field"><label>Apt / Unidad <span class="opt">(si aplica)</span></label>
+            <input type="text" name="owner${n}_addr2" id="owner${n}_addr2" placeholder="Ej: Apt 3A"
+                   oninput="validateApt2('owner${n}_addr2','owner${n}_addr2_hint')">
+            <span class="hint" id="owner${n}_addr2_hint"></span></div>
+          <div class="form-grid c3" style="gap:10px;margin:0">
+            <div class="field"><label>Ciudad</label><input type="text" name="owner${n}_city" placeholder="Ciudad"></div>
+            <div class="field"><label>Estado</label>
+              <select name="owner${n}_state_addr">
+                <option value="">—</option>
+                <option>AL</option><option>AK</option><option>AZ</option><option>AR</option><option>CA</option>
+                <option>CO</option><option>CT</option><option>DE</option><option>FL</option><option>GA</option>
+                <option>HI</option><option>ID</option><option>IL</option><option>IN</option><option>IA</option>
+                <option>KS</option><option>KY</option><option>LA</option><option>ME</option><option>MD</option>
+                <option>MA</option><option>MI</option><option>MN</option><option>MS</option><option>MO</option>
+                <option>MT</option><option>NE</option><option>NV</option><option>NH</option><option>NJ</option>
+                <option>NM</option><option>NY</option><option>NC</option><option>ND</option><option>OH</option>
+                <option>OK</option><option>OR</option><option>PA</option><option>RI</option><option>SC</option>
+                <option>SD</option><option>TN</option><option>TX</option><option>UT</option><option>VT</option>
+                <option>VA</option><option>WA</option><option>WV</option><option>WI</option><option>WY</option>
+                <option value="N/A">N/A</option>
+              </select></div>
+            <div class="field"><label>ZIP Code</label>
+              <input type="text" name="owner${n}_zip" id="owner${n}_zip" placeholder="00000" maxlength="10" oninput="validateZip(this)"></div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  document.getElementById('owners-container').appendChild(div);
+}
+
+function removeOwner(n) {
+  const el = document.getElementById('owner-' + n);
+  if (el) el.remove();
+}
+
+// ══════════════════════════════════════════════════════
+//  PROGRESS BAR
+// ══════════════════════════════════════════════════════
+function markStep(step) {
+  for (let i = 1; i < step; i++) {
+    document.getElementById('sp' + i).className = 'step-pill done';
+    if (document.getElementById('sc' + i)) document.getElementById('sc' + i).className = 'step-conn done';
+  }
+  document.getElementById('sp' + step).className = 'step-pill active';
+  for (let i = step + 1; i <= 4; i++) {
+    document.getElementById('sp' + i).className = 'step-pill';
+  }
+}
+
+// ══════════════════════════════════════════════════════
+//  URL PARAM AUTO-SELECT
+// ══════════════════════════════════════════════════════
+window.addEventListener('DOMContentLoaded', () => {
+  const params = new URLSearchParams(window.location.search);
+  const pkg    = params.get('pkg');
+  if (pkg === 'basico')  { document.querySelector('[value="Básico - $247"]').checked = true; selectPkg('basic'); }
+  if (pkg === 'premium') { document.querySelector('[value="Premium - $397"]').checked = true; selectPkg('premium'); }
+  if (pkg === 'vip')     { document.querySelector('[value="VIP - $997"]').checked = true; selectPkg('vip'); }
+
+  // Pkg opt click handlers
+  document.querySelectorAll('.pkg-opt').forEach(el => {
+    el.addEventListener('click', () => {
+      const v = el.querySelector('input').value;
+      if (v.includes('247')) selectPkg('basic');
+      else if (v.includes('397')) selectPkg('premium');
+      else if (v.includes('997')) selectPkg('vip');
     });
   });
+});
+
+// ══════════════════════════════════════════════════════
+//  SUBMIT
+// ══════════════════════════════════════════════════════
+async function submitForm(e) {
+  e.preventDefault();
+
+  const pkg = document.querySelector('input[name="package"]:checked');
+  if (!pkg) { alert('Por favor selecciona un paquete para continuar.'); return; }
+
+  // FIX #1: Validaciones de campos obligatorios faltantes
+  const _companyName = document.querySelector('input[name="name1"]');
+  if (!_companyName || !_companyName.value.trim()) {
+    alert('Por favor ingresa el nombre de la empresa (Opción 1).');
+    _companyName && _companyName.scrollIntoView({behavior:'smooth', block:'center'});
+    _companyName && _companyName.focus(); return;
+  }
+  const _ownerFirst = document.querySelector('input[name="owner1_first"]');
+  const _ownerLast  = document.querySelector('input[name="owner1_last"]');
+  if (!_ownerFirst || !_ownerFirst.value.trim() || !_ownerLast || !_ownerLast.value.trim()) {
+    alert('Por favor ingresa el nombre completo del propietario principal.');
+    (_ownerFirst || _ownerLast).scrollIntoView({behavior:'smooth', block:'center'});
+    (_ownerFirst || _ownerLast).focus(); return;
+  }
+  const _contactEmail = document.querySelector('input[name="contact_email"]');
+  if (!_contactEmail || !_contactEmail.value.trim()) {
+    alert('Por favor ingresa el email de contacto.');
+    _contactEmail && _contactEmail.scrollIntoView({behavior:'smooth', block:'center'});
+    _contactEmail && _contactEmail.focus(); return;
+  }
+  const _contactPhone = document.querySelector('input[name="contact_phone"]');
+  if (!_contactPhone || !_contactPhone.value.trim()) {
+    alert('Por favor ingresa el teléfono de contacto.');
+    _contactPhone && _contactPhone.scrollIntoView({behavior:'smooth', block:'center'});
+    _contactPhone && _contactPhone.focus(); return;
+  }
+
+  // FIX #12: Validar que los porcentajes de participación sumen 100%
+  const _pctInputs = document.querySelectorAll('input[name$="_pct"]');
+  if (_pctInputs.length > 0) {
+    const _pctTotal = Array.from(_pctInputs).reduce((sum, el) => {
+      const v = parseFloat(el.value.replace('%','').trim()) || 0;
+      return sum + v;
+    }, 0);
+    if (Math.round(_pctTotal) !== 100) {
+      alert('Los porcentajes de participación deben sumar 100%. Actualmente suman ' + _pctTotal.toFixed(1) + '%.');
+      _pctInputs[0].scrollIntoView({behavior:'smooth', block:'center'});
+      _pctInputs[0].focus(); return;
+    }
+  }
+
+    if (naicsSelected.length === 0) {
+    alert('Por favor selecciona al menos un tipo de negocio (actividad principal).');
+    document.getElementById('naics-search').focus(); return;
+  }
+
+  // ── Validar dirección del negocio ──
+  const bizAddr1 = document.querySelector('[name="biz_addr1"]');
+  if (!bizAddr1 || !bizAddr1.value.trim()) {
+    alert('Por favor ingresa la dirección del negocio.');
+    bizAddr1 && bizAddr1.scrollIntoView({behavior:'smooth', block:'center'});
+    bizAddr1 && bizAddr1.focus(); return;
+  }
+
+  // ── Validar dirección del propietario 1 ──
+  const ownerAddr1 = document.querySelector('[name="owner1_addr1"]');
+  if (!ownerAddr1 || !ownerAddr1.value.trim()) {
+    alert('Por favor ingresa la dirección residencial del propietario principal.');
+    ownerAddr1 && ownerAddr1.scrollIntoView({behavior:'smooth', block:'center'});
+    ownerAddr1 && ownerAddr1.focus(); return;
+  }
+
+  const form = document.getElementById('formation-form');
+  const fd   = new FormData(form);
+  const data = {};
+  fd.forEach((val, key) => { data[key] = val; });
+  // FIX #3: Ensure owner title is explicitly captured
+  data.owner1_title = document.getElementById('owner1_title')?.value || data.owner1_title || '';
+
+  // ── Ensamblar dirección del negocio ──
+  data.business_address = [
+    data.biz_addr1,
+    data.biz_addr2,
+    data.biz_city,
+    data.biz_state,
+    data.biz_zip
+  ].filter(v => v && v.trim()).join(', ');
+
+  // ── Ensamblar dirección de mailing (si difiere) ──
+  if (data.mail_addr1 && data.mail_addr1.trim()) {
+    data.mailing_address = [
+      data.mail_addr1,
+      data.mail_addr2,
+      data.mail_city,
+      data.mail_state,
+      data.mail_zip
+    ].filter(v => v && v.trim()).join(', ');
+  } else {
+    data.mailing_address = data.business_address;
+  }
+
+  // ── Ensamblar dirección del propietario 1 ──
+  data.owner1_address = [
+    data.owner1_addr1,
+    data.owner1_addr2,
+    data.owner1_city,
+    data.owner1_state_addr,
+    data.owner1_zip
+  ].filter(v => v && v.trim()).join(', ');
+
+  // ── Ensamblar dirección de propietarios adicionales ──
+  for (let n = 2; n <= 5; n++) {
+    if (data['owner' + n + '_addr1']) {
+      data['owner' + n + '_address'] = [
+        data['owner' + n + '_addr1'],
+        data['owner' + n + '_addr2'],
+        data['owner' + n + '_city'],
+        data['owner' + n + '_state_addr'],
+        data['owner' + n + '_zip']
+      ].filter(v => v && v.trim()).join(', ');
+    }
+  }
+
+  // ── Nombre completo propietario 1 ──
+  data.owner1_full_name = [data.owner1_first, data.owner1_middle, data.owner1_last]
+    .filter(v => v && v.trim()).join(' ');
+
+  // Agregar NAICS seleccionados
+  data.business_naics = document.getElementById('business_naics_hidden').value;
+
+  // Estimate total
+  const entity  = document.getElementById('entity_type').value;
+  const state   = document.getElementById('state_select').value;
+  const stFees  = STATE_FEES[state];
+  const stateFee = stFees ? (stFees[entity] || 0) : 0;
+  const pkgPrice = PKG_PRICES[selectedPkg] || 0;
+  const scorpFee = data.scorp_addon ? 97 : 0;
+  data.estimate_total = '$' + (pkgPrice + stateFee + scorpFee).toLocaleString();
+  data.state_fee = '$' + stateFee;
+
+  const btn = form.querySelector('.btn-submit');
+  btn.textContent = 'Enviando...';
+  btn.disabled    = true;
+
+  const sends = [];
+
+  if (APPS_SCRIPT_URL && !APPS_SCRIPT_URL.includes('TU_URL')) {
+    sends.push(fetch(APPS_SCRIPT_URL, {
+      method: 'POST', headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify(data), mode: 'no-cors'
+    }).catch(() => null));
+  }
+
+  if (FORMSPREE_URL && !FORMSPREE_URL.includes('TU_URL')) {
+    sends.push(fetch(FORMSPREE_URL, {
+      method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(data)
+    }).catch(() => null));
+  }
+
+  if (sends.length > 0) {
+    await Promise.race([Promise.allSettled(sends), new Promise(r => setTimeout(r, 8000))]);
+  }
+
+  form.style.display = 'none';
+  document.getElementById('success-screen').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+
+<!-- ── PWA Install Banner ── -->
+<div id="pwa-banner" style="
+  display:none;position:fixed;bottom:0;left:0;right:0;z-index:1200;
+  background:linear-gradient(135deg,#1A1F6B,#6C47FF);
+  padding:14px 20px 18px;box-shadow:0 -4px 24px rgba(108,71,255,.4);
+  font-family:'Montserrat',sans-serif;
+  padding-bottom:calc(14px + env(safe-area-inset-bottom))">
+  <div style="display:flex;align-items:center;gap:14px;max-width:480px;margin:0 auto">
+    <img src="icon-192.png" alt="Alved" style="width:44px;height:44px;border-radius:10px;flex-shrink:0">
+    <div style="flex:1">
+      <div style="color:#fff;font-size:.85rem;font-weight:700;margin-bottom:2px">Instala la App de Alved</div>
+      <div style="color:rgba(255,255,255,.75);font-size:.74rem">Acceso rápido desde tu pantalla de inicio</div>
+    </div>
+    <button id="pwa-install-btn" style="
+      background:#fff;color:#1A1F6B;border:none;border-radius:8px;
+      padding:9px 18px;font-size:.8rem;font-weight:800;cursor:pointer;
+      font-family:'Montserrat',sans-serif;white-space:nowrap;flex-shrink:0">
+      Instalar
+    </button>
+    <button onclick="document.getElementById('pwa-banner').style.display='none'" style="
+      background:none;border:none;color:rgba(255,255,255,.6);cursor:pointer;
+      font-size:1.2rem;line-height:1;padding:4px;flex-shrink:0">✕</button>
+  </div>
+</div>
+
+<!-- iOS Install Hint (Safari no soporta beforeinstallprompt) -->
+<div id="ios-banner" style="
+  display:none;position:fixed;bottom:0;left:0;right:0;z-index:1200;
+  background:linear-gradient(135deg,#1A1F6B,#6C47FF);
+  padding:16px 20px 20px;box-shadow:0 -4px 24px rgba(108,71,255,.4);
+  font-family:'Montserrat',sans-serif;text-align:center;
+  padding-bottom:calc(16px + env(safe-area-inset-bottom))">
+  <div style="color:#fff;font-size:.85rem;font-weight:700;margin-bottom:6px">Instala esta app en tu iPhone</div>
+  <div style="color:rgba(255,255,255,.8);font-size:.78rem;line-height:1.6">
+    Toca <strong style="color:#fff">Compartir</strong> <span style="font-size:1rem">⎙</span> y luego<br>
+    <strong style="color:#fff">"Agregar a pantalla de inicio"</strong> 📲
+  </div>
+  <button onclick="document.getElementById('ios-banner').style.display='none';localStorage.setItem('pwa-dismissed','1')"
+    style="margin-top:12px;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.4);
+    color:#fff;border-radius:8px;padding:7px 20px;font-size:.78rem;font-weight:600;
+    cursor:pointer;font-family:'Montserrat',sans-serif">Entendido</button>
+</div>
+
+<script>
+/* ── Service Worker Registration ── */
+if ('serviceWorker' in navigator) {
+  const _swRegister = () => navigator.serviceWorker.register('./sw.js').catch(() => { /* SW unavailable */ });
+  if (document.readyState === 'complete') {
+    _swRegister();
+  } else {
+    window.addEventListener('load', _swRegister);
+    document.addEventListener('DOMContentLoaded', _swRegister);
+  }
 }
 
 /* ── PWA Install Prompt (Android / Chrome) ── */
