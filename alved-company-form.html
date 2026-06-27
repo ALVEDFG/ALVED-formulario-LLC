@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
 <title>Formulario de Formación | Alved Financial Group</title>
 
 <!-- PWA Meta Tags -->
@@ -170,6 +170,7 @@
 
   /* ── NAICS ── */
   .naics-wrap{position:relative}
+  .naics-input{font-size:16px !important;-webkit-text-size-adjust:100%}
   .naics-dropdown{position:absolute;top:100%;left:0;right:0;z-index:50;
     background:#fff;border:1.5px solid var(--purple);border-top:none;
     border-radius:0 0 10px 10px;max-height:230px;overflow-y:auto;
@@ -334,83 +335,147 @@
      RESPONSIVE — MOBILE (max 600px)
   ══════════════════════════════════════════ */
   @media(max-width:600px){
+    /* Evitar scroll horizontal global */
+    html,body{overflow-x:hidden;width:100%}
+
     /* NAV */
     nav{padding:0 14px;height:56px}
-    nav img{height:38px}
-    nav a{font-size:.74rem}
+    nav img{height:36px}
+    nav a{font-size:.72rem;white-space:nowrap;overflow:hidden;
+      text-overflow:ellipsis;max-width:130px}
 
     /* HERO */
     .form-hero{flex-direction:column}
     .hero-img-col{display:none}
-    .hero-content{padding:32px 20px 28px}
-    .form-hero h1{font-size:1.3rem}
-    .form-hero p{font-size:.84rem;max-width:100%}
-    .pkg-badge{padding:6px 16px;margin-bottom:12px}
-    .pkg-badge span{font-size:.75rem}
+    .hero-content{padding:28px 18px 24px}
+    .form-hero h1{font-size:1.25rem;line-height:1.3;word-break:break-word}
+    .form-hero p{font-size:.83rem;max-width:100%;line-height:1.55}
+    .pkg-badge{padding:6px 14px;margin-bottom:10px}
+    .pkg-badge span{font-size:.73rem}
 
-    /* PROGRESS */
-    .progress-bar{padding:12px 10px;overflow-x:auto}
-    .steps{gap:0}
-    .step-pill{gap:5px;font-size:.7rem}
+    /* PROGRESS — solo números, sin texto */
+    .progress-bar{padding:10px 8px;overflow:hidden}
+    .steps{gap:0;justify-content:center}
+    .step-pill{gap:4px;font-size:.68rem;flex-shrink:0}
     .step-pill span{display:none}
-    .step-num{width:26px;height:26px;font-size:.68rem}
-    .step-conn{width:20px;margin:0 4px}
+    .step-num{width:28px;height:28px;font-size:.7rem;flex-shrink:0}
+    .step-conn{width:18px;min-width:10px;margin:0 3px}
 
     /* WRAP & CARDS */
-    .form-wrap{padding:16px 10px 64px}
-    .form-card{padding:18px 14px;margin-bottom:14px;border-radius:12px}
-    .card-header h2{font-size:.9rem}
-    .card-header .sub{font-size:.75rem}
+    .form-wrap{padding:14px 10px 70px;box-sizing:border-box}
+    .form-card{padding:16px 13px;margin-bottom:12px;border-radius:10px;
+      overflow:hidden;word-break:break-word}
+    .card-header{margin-bottom:16px}
+    .card-header h2{font-size:.88rem;line-height:1.4;flex-wrap:wrap;gap:6px}
+    .card-header h2 .step-tag{font-size:.62rem;padding:2px 8px}
+    .card-header .sub{font-size:.74rem;line-height:1.5}
 
     /* ESTIMATE BANNER */
     .estimate-banner{flex-direction:column;gap:8px;text-align:center;padding:14px 16px}
-    .est-left .est-total{font-size:1.3rem}
-    .est-right{text-align:center;max-width:100%;font-size:.7rem}
+    .est-left .est-total{font-size:1.25rem}
+    .est-right{text-align:center;max-width:100%;font-size:.69rem}
 
     /* PACKAGES */
     .pkg-selector{grid-template-columns:1fr}
     .pkg-opt{padding:14px 12px}
     .pkg-items{grid-template-columns:1fr}
 
-    /* GRIDS */
-    .form-grid,.form-grid.c3,.ra-opts,.cs-opts{grid-template-columns:1fr}
+    /* GRIDS — todo a 1 columna */
+    .form-grid,.form-grid.c3,.ra-opts,.cs-opts{grid-template-columns:1fr !important}
+
+    /* ⚠️ FIX iOS: inputs < 16px disparan auto-zoom — se fija a 16px */
+    .field input,.field select,.field textarea{
+      font-size:16px !important;
+      -webkit-appearance:none;
+      border-radius:8px
+    }
+
+    /* Labels y textos largos */
+    .field label{font-size:.79rem;word-break:break-word}
+    .field .hint{font-size:.71rem}
+    .id-badge{font-size:.68rem}
+
+    /* NAME ROW — badge número alineado */
+    .name-row{align-items:flex-start;gap:8px}
+    .name-num{margin-top:36px;flex-shrink:0}
 
     /* OWNER */
-    .owner-header-row{flex-direction:column;align-items:flex-start;gap:10px}
-    .owner-block{padding:14px}
+    .owner-header-row{flex-direction:column;align-items:flex-start;gap:8px}
+    .add-owner-btn{width:100%;text-align:center}
+    .owner-block{padding:13px;overflow:hidden}
+    .owner-block-title{font-size:.82rem;flex-wrap:wrap;gap:6px}
 
     /* ADDRESS */
-    .addr-block{padding:12px}
+    .addr-block{padding:12px;overflow:hidden}
+    .addr-title{font-size:.7rem}
+
+    /* SAME ADDRESS TOGGLE */
+    .same-addr{padding:12px 14px}
+    .same-addr .sa-text{font-size:.82rem}
+    .same-addr .sa-sub{font-size:.7rem}
 
     /* NAICS */
-    .naics-dropdown{font-size:.82rem}
-    .naics-item{padding:8px 12px}
+    .naics-wrap{position:relative}
+    .naics-dropdown{position:fixed !important;left:10px !important;right:10px !important;
+      top:auto !important;max-height:50vh;z-index:9999}
+    .naics-item{padding:10px 12px;font-size:.81rem}
+    .naics-tag{font-size:.72rem}
 
-    /* SUBMIT */
-    .btn-submit{width:100%;padding:16px 20px;font-size:.95rem}
+    /* RA / CS OPCIONES */
+    .ra-opt,.cs-opt{padding:12px}
+    .ra-title{font-size:.82rem}
+    .ra-desc{font-size:.71rem}
+
+    /* INFO BOX */
+    .info-box{font-size:.76rem;padding:10px 12px}
 
     /* DISCLAIMER */
-    .disclaimer-box{padding:16px}
-    .disclaimer-txt{font-size:.72rem}
-    .check-item span{font-size:.78rem}
+    .disclaimer-box{padding:14px}
+    .disclaimer-txt{font-size:.71rem;line-height:1.7}
+    .check-item span{font-size:.77rem;line-height:1.5}
+    .disclaimer-box h4{font-size:.75rem}
+
+    /* SUBMIT */
+    .submit-area{margin-top:20px}
+    .btn-submit{width:100%;padding:15px 20px;font-size:.93rem;letter-spacing:.01em}
+    .submit-note{font-size:.72rem}
 
     /* PKG DETAIL */
     .pkg-detail-header{flex-direction:column;align-items:flex-start;gap:4px;padding:12px 14px}
+    .pkg-detail-header .pd-name{font-size:.88rem}
     .pkg-detail-body{padding:12px 14px}
+    .pkg-item{font-size:.78rem}
+
+    /* SUCCESS SCREEN */
+    .success-screen{padding:40px 18px}
+    .success-screen h2{font-size:1.2rem}
+    .success-screen p{font-size:.85rem}
+    .success-steps{padding:16px}
+    .success-steps li{font-size:.8rem}
 
     /* WHATSAPP BUTTON */
-    .wa-btn{bottom:18px;right:18px;width:50px;height:50px}
+    .wa-btn{bottom:18px;right:16px;width:50px;height:50px}
     .wa-btn svg{width:26px;height:26px}
+
+    /* PWA BANNERS */
+    #pwa-banner,#ios-banner{padding-left:14px;padding-right:14px}
   }
 
   /* ══════════════════════════════════════════
-     RESPONSIVE — VERY SMALL (max 380px)
+     RESPONSIVE — VERY SMALL (max 390px)
   ══════════════════════════════════════════ */
-  @media(max-width:380px){
-    .form-hero h1{font-size:1.15rem}
+  @media(max-width:390px){
+    nav a{max-width:100px;font-size:.68rem}
+    .form-hero h1{font-size:1.1rem}
     .step-conn{width:12px;margin:0 2px}
-    .form-card{padding:14px 12px}
-    .btn-submit{font-size:.88rem}
+    .step-num{width:25px;height:25px;font-size:.65rem}
+    .form-card{padding:13px 11px}
+    .form-wrap{padding:12px 8px 70px}
+    .btn-submit{font-size:.88rem;padding:14px}
+    .card-header h2{font-size:.84rem}
+    .field label{font-size:.76rem}
+    /* Inputs siguen en 16px para no romper iOS */
+    .field input,.field select,.field textarea{font-size:16px !important}
   }
 </style>
 </head>
@@ -1057,68 +1122,274 @@ const TITLE_OPTIONS = {
 
 // ── NAICS DATA ──────────────────────────────────────
 const NAICS_DATA = [
+  /* ── AGRICULTURA ── */
+  { code:"111998", label:"Agricultura y Cultivos Especializados" },
+  { code:"112990", label:"Cría de Animales y Ganadería" },
+  { code:"115114", label:"Cosecha y Limpieza de Frutos / Farming" },
+
+  /* ── CONSTRUCCIÓN ── */
+  { code:"236115", label:"Construcción de Viviendas / General Contractor" },
+  { code:"236116", label:"Remodelación y Renovación de Casas" },
+  { code:"236220", label:"Construcción Comercial e Industrial" },
+  { code:"237310", label:"Construcción de Carreteras y Pavimentación" },
+  { code:"238110", label:"Plomería / Plumbing" },
+  { code:"238130", label:"Calefacción y Refrigeración / HVAC" },
+  { code:"238140", label:"Techados / Roofing" },
+  { code:"238150", label:"Pisos / Flooring" },
+  { code:"238160", label:"Vidriería y Ventanas / Glass & Windows" },
+  { code:"238170", label:"Pintura de Exteriores e Interiores" },
+  { code:"238190", label:"Reparaciones del Hogar / Handyman" },
+  { code:"238210", label:"Electricidad / Electrical Contractor" },
+  { code:"238220", label:"Aire Acondicionado / HVAC" },
+  { code:"238290", label:"Instalaciones y Contratistas Especiales" },
+  { code:"238310", label:"Concreto y Estuco / Drywall" },
+  { code:"238320", label:"Pintura y Acabados / Painting" },
+  { code:"238390", label:"Otros Contratistas de Acabados" },
+  { code:"238910", label:"Demolición y Excavación" },
+
+  /* ── MANUFACTURA / PRODUCCIÓN ── */
   { code:"311811", label:"Panaderías y Pastelerías" },
+  { code:"311919", label:"Producción de Snacks y Alimentos" },
+  { code:"311942", label:"Salsas, Aderezos y Condimentos" },
+  { code:"312111", label:"Bebidas No Alcohólicas / Jugos" },
+  { code:"315990", label:"Confección de Ropa y Textiles" },
+  { code:"339999", label:"Producción y Manufactura Artesanal" },
+
+  /* ── COMERCIO MAYORISTA ── */
   { code:"423690", label:"Distribución y Mayorista de Productos" },
+  { code:"424410", label:"Distribución de Abarrotes / Groceries" },
+  { code:"424490", label:"Distribución de Alimentos Preparados" },
+  { code:"424910", label:"Distribución de Insumos Agrícolas" },
+
+  /* ── COMERCIO MINORISTA / RETAIL ── */
   { code:"441110", label:"Concesionarios de Automóviles" },
+  { code:"441310", label:"Repuestos y Accesorios de Auto / Auto Parts" },
+  { code:"444110", label:"Ferreterías / Home Improvement" },
+  { code:"445110", label:"Supermercados y Tiendas de Abarrotes" },
+  { code:"445230", label:"Fruterías / Specialty Food Stores" },
+  { code:"446110", label:"Farmacias y Droguerías" },
+  { code:"448110", label:"Ropa de Damas / Women's Clothing" },
+  { code:"448120", label:"Ropa de Caballeros / Men's Clothing" },
+  { code:"448130", label:"Ropa Infantil / Children's Clothing" },
+  { code:"448140", label:"Ropa Familiar / Family Clothing" },
+  { code:"448210", label:"Zapaterías / Shoe Stores" },
+  { code:"451110", label:"Instrumentos Musicales / Music Stores" },
+  { code:"451120", label:"Librerías y Papelerías" },
   { code:"452910", label:"Tiendas de Descuento y Liquidación" },
+  { code:"453110", label:"Florerías / Flower Shops" },
+  { code:"453210", label:"Tiendas de Arte y Manualidades" },
+  { code:"453310", label:"Tiendas de Cosméticos y Perfumería" },
+  { code:"453910", label:"Tiendas de Mascotas / Pet Stores" },
   { code:"453991", label:"Tiendas de Regalos y Souvenirs" },
   { code:"454110", label:"Comercio Electrónico / E-commerce" },
-  { code:"484110", label:"Transporte y Mudanzas" },
+  { code:"454310", label:"Venta Directa / Direct Sales" },
+
+  /* ── TRANSPORTE Y LOGÍSTICA ── */
+  { code:"481219", label:"Transporte Aéreo Chárter / Privado" },
+  { code:"484110", label:"Transporte y Mudanzas / Moving" },
+  { code:"484121", label:"Transporte de Carga / Trucking" },
+  { code:"485310", label:"Taxis y Transporte de Pasajeros" },
+  { code:"485320", label:"Limusinas y Transporte Ejecutivo" },
+  { code:"485410", label:"Transporte Escolar / School Bus" },
+  { code:"485510", label:"Transporte de Turismo / Tours" },
+  { code:"485999", label:"Servicios de Transporte (Uber/Lyft)" },
   { code:"492110", label:"Mensajería y Entrega de Paquetes" },
+  { code:"492210", label:"Courier Local / Delivery Service" },
   { code:"493110", label:"Almacenamiento y Bodegas / Storage" },
+
+  /* ── INFORMACIÓN Y TECNOLOGÍA ── */
+  { code:"511110", label:"Publicación de Libros y Editoriales" },
+  { code:"511120", label:"Publicación de Revistas y Periódicos" },
+  { code:"512110", label:"Producción de Películas y Videos" },
+  { code:"512191", label:"Post-Producción de Video y Audio" },
+  { code:"515112", label:"Radio y Estaciones de Radio" },
+  { code:"517110", label:"Telecomunicaciones / Internet Provider" },
+  { code:"518210", label:"Hospedaje Web / Cloud Computing" },
+  { code:"519110", label:"Agencias de Noticias y Contenido" },
   { code:"519130", label:"Blogs, Podcasts y Medios en Línea" },
-  { code:"522390", label:"Servicios Financieros / Prestamistas" },
-  { code:"523130", label:"Corredores de Inversiones / Trading" },
-  { code:"524210", label:"Agencias de Seguros" },
-  { code:"531110", label:"Arrendamiento de Propiedades Residenciales" },
-  { code:"531120", label:"Arrendamiento de Propiedades Comerciales" },
-  { code:"531210", label:"Agencias de Bienes Raíces / Real Estate" },
-  { code:"541110", label:"Servicios Legales / Abogacía" },
-  { code:"541211", label:"Contabilidad y Teneduría de Libros" },
-  { code:"541213", label:"Preparación de Impuestos / Tax Prep" },
-  { code:"541310", label:"Servicios de Arquitectura" },
-  { code:"541330", label:"Ingeniería y Consultoría Técnica" },
-  { code:"541511", label:"Desarrollo de Software / Apps" },
+  { code:"541511", label:"Desarrollo de Software y Apps" },
   { code:"541512", label:"Diseño de Sistemas Informáticos / IT" },
-  { code:"541613", label:"Consultoría de Marketing y Negocios" },
-  { code:"541714", label:"Investigación y Desarrollo Tecnológico" },
-  { code:"541810", label:"Agencias de Publicidad y Medios" },
-  { code:"541990", label:"Consultoría Empresarial General" },
+  { code:"541519", label:"Soporte Técnico / Tech Support" },
+
+  /* ── FINANZAS Y SEGUROS ── */
+  { code:"522110", label:"Banca Comercial / Banking" },
+  { code:"522291", label:"Préstamos al Consumidor / Personal Loans" },
+  { code:"522390", label:"Servicios Financieros / Prestamistas" },
+  { code:"523110", label:"Corredores de Bolsa / Broker-Dealer" },
+  { code:"523130", label:"Inversiones y Trading" },
+  { code:"523920", label:"Asesoría de Inversiones / Financial Advisory" },
+  { code:"523999", label:"Servicios Financieros Varios" },
+  { code:"524113", label:"Seguros de Vida / Life Insurance" },
+  { code:"524126", label:"Seguros de Propiedad / Property Insurance" },
+  { code:"524210", label:"Agencias de Seguros / Insurance Agency" },
+  { code:"525910", label:"Fondos de Inversión / Investment Funds" },
+
+  /* ── BIENES RAÍCES ── */
+  { code:"531110", label:"Renta de Propiedades Residenciales" },
+  { code:"531120", label:"Renta de Propiedades Comerciales" },
+  { code:"531190", label:"Airbnb / Short-Term Rental" },
+  { code:"531210", label:"Agencias de Bienes Raíces / Real Estate" },
+  { code:"531311", label:"Administración de Propiedades" },
+  { code:"531320", label:"Inversión y Flipping de Propiedades" },
+  { code:"531390", label:"Actividades de Bienes Raíces Varios" },
+
+  /* ── SERVICIOS PROFESIONALES ── */
+  { code:"541110", label:"Servicios Legales / Abogacía" },
+  { code:"541191", label:"Notaría / Notary Public" },
+  { code:"541199", label:"Servicios Legales Auxiliares" },
+  { code:"541211", label:"Contabilidad / Bookkeeping" },
+  { code:"541213", label:"Preparación de Impuestos / Tax Prep" },
+  { code:"541214", label:"Nóminas / Payroll Services" },
+  { code:"541219", label:"Servicios de Auditoría y Finanzas" },
+  { code:"541310", label:"Arquitectura y Diseño de Interiores" },
+  { code:"541330", label:"Ingeniería y Consultoría Técnica" },
+  { code:"541410", label:"Diseño de Interiores / Interior Design" },
+  { code:"541430", label:"Diseño Gráfico / Graphic Design" },
+  { code:"541490", label:"Diseño y Artes Visuales" },
+  { code:"541511", label:"Programación y Desarrollo Web" },
+  { code:"541512", label:"Soporte IT y Redes / Network Services" },
+  { code:"541611", label:"Consultoría de Gestión Empresarial" },
+  { code:"541612", label:"Recursos Humanos / HR Consulting" },
+  { code:"541613", label:"Consultoría de Marketing y Ventas" },
+  { code:"541614", label:"Logística y Cadena de Suministro" },
+  { code:"541618", label:"Consultoría Empresarial General" },
+  { code:"541810", label:"Agencias de Publicidad / Advertising" },
+  { code:"541820", label:"Relaciones Públicas / PR Agency" },
+  { code:"541830", label:"Compra de Medios / Media Buying" },
+  { code:"541850", label:"Publicidad Digital / Digital Marketing" },
+  { code:"541860", label:"Correo Directo / Direct Mail" },
+  { code:"541870", label:"Anuncios y Señalización / Signage" },
+  { code:"541910", label:"Investigación de Mercado / Market Research" },
+  { code:"541921", label:"Fotografía Profesional" },
+  { code:"541922", label:"Videografía y Producción" },
+  { code:"541990", label:"Servicios Profesionales Varios" },
+
+  /* ── SERVICIOS ADMINISTRATIVOS ── */
   { code:"561110", label:"Servicios Administrativos de Oficina" },
+  { code:"561210", label:"Gestión de Instalaciones / Facilities" },
+  { code:"561310", label:"Reclutamiento y Colocación de Personal" },
   { code:"561320", label:"Agencias de Empleo / Staffing" },
+  { code:"561410", label:"Secretaría y Apoyo Administrativo" },
   { code:"561421", label:"Call Centers y Servicio al Cliente" },
+  { code:"561431", label:"Mensajería y Fotocopiado / Printing" },
+  { code:"561439", label:"Centros de Negocios / Business Centers" },
   { code:"561499", label:"Servicios de Apoyo al Negocio" },
-  { code:"561720", label:"Limpieza y Mantenimiento / Cleaning" },
-  { code:"561730", label:"Jardinería / Landscaping" },
+  { code:"561510", label:"Agencias de Viajes / Travel Agency" },
+  { code:"561520", label:"Operadores Turísticos / Tour Operators" },
+  { code:"561591", label:"Agentes Migratorios / Immigration" },
+  { code:"561599", label:"Servicios de Apoyo de Viajes Varios" },
+  { code:"561611", label:"Seguridad e Investigación Privada" },
+  { code:"561710", label:"Exterminación / Pest Control" },
+  { code:"561720", label:"Limpieza Residencial y Comercial" },
+  { code:"561730", label:"Jardinería y Paisajismo / Landscaping" },
+  { code:"561740", label:"Limpieza de Alfombras / Carpet Cleaning" },
+  { code:"561790", label:"Servicios de Limpieza Especializados" },
+  { code:"561910", label:"Empaques y Envíos / Packaging" },
+  { code:"561920", label:"Organización de Convenciones y Eventos" },
+  { code:"561990", label:"Otros Servicios de Apoyo Empresarial" },
+
+  /* ── EDUCACIÓN ── */
   { code:"611110", label:"Escuelas y Academias Privadas" },
+  { code:"611310", label:"Universidades y Colegios Privados" },
+  { code:"611410", label:"Escuelas de Negocios / Business School" },
+  { code:"611420", label:"Escuelas de Computación / Tech Training" },
+  { code:"611430", label:"Capacitación Profesional y Certificaciones" },
+  { code:"611511", label:"Escuelas de Cosmetología / Beauty School" },
+  { code:"611519", label:"Escuelas Vocacionales y Técnicas" },
+  { code:"611610", label:"Escuelas de Arte, Drama y Música" },
+  { code:"611620", label:"Deportes y Artes Marciales / Martial Arts" },
   { code:"611630", label:"Instrucción Deportiva / Coaching" },
+  { code:"611691", label:"Preparación de Exámenes / Test Prep" },
+  { code:"611692", label:"Clases de Idiomas / Language School" },
   { code:"611699", label:"Tutorías y Educación Privada" },
-  { code:"621111", label:"Consultorios Médicos / Salud" },
-  { code:"621210", label:"Consultorios Dentales" },
+  { code:"611710", label:"Agencias de Apoyo Educativo" },
+
+  /* ── SALUD Y BIENESTAR ── */
+  { code:"621111", label:"Consultorios Médicos / Physicians" },
+  { code:"621112", label:"Clínicas de Salud / Health Clinics" },
+  { code:"621210", label:"Consultorios Dentales / Dentistry" },
+  { code:"621310", label:"Quiropráctica / Chiropractic" },
+  { code:"621320", label:"Optometría / Eye Care" },
   { code:"621330", label:"Salud Mental y Psicología" },
-  { code:"621399", label:"Servicios de Salud y Bienestar" },
-  { code:"621610", label:"Servicios de Enfermería en el Hogar" },
+  { code:"621340", label:"Podología / Foot Care" },
+  { code:"621391", label:"Homeopatía y Medicina Alternativa" },
+  { code:"621399", label:"Bienestar y Salud Holística" },
+  { code:"621410", label:"Centros de Cuidado Familiar" },
+  { code:"621491", label:"Centros de Diálisis / Specialty Clinics" },
+  { code:"621498", label:"Laboratorios Clínicos / Lab Services" },
+  { code:"621610", label:"Enfermería en el Hogar / Home Health" },
+  { code:"621910", label:"Ambulancias y Transporte Médico" },
+  { code:"621999", label:"Servicios de Salud Varios" },
+  { code:"623110", label:"Hogares de Cuidado con Enfermería" },
+  { code:"623210", label:"Centros de Cuidado para Discapacitados" },
+  { code:"623311", label:"Residencias para Adultos Mayores" },
   { code:"623312", label:"Asistencia para Personas con Discapacidad" },
+  { code:"624110", label:"Servicios para Niños / Child Services" },
   { code:"624120", label:"Servicios para Adultos Mayores / Elderly" },
-  { code:"624310", label:"Capacitación Vocacional y Educativa" },
+  { code:"624190", label:"Servicios de Bienestar Familiar" },
+  { code:"624210", label:"Bancos de Alimentos / Food Assistance" },
+  { code:"624310", label:"Capacitación Vocacional y Empleo" },
+  { code:"624410", label:"Guarderías y Cuidado Infantil / Daycare" },
+
+  /* ── ARTE, ENTRETENIMIENTO Y RECREACIÓN ── */
+  { code:"711110", label:"Compañías de Teatro y Danza" },
+  { code:"711190", label:"Artes Escénicas y Espectáculos" },
+  { code:"711310", label:"Producción de Conciertos y Eventos" },
+  { code:"711410", label:"Agencias de Representación Artística" },
+  { code:"711510", label:"Artistas y Entretenimiento Independiente" },
+  { code:"712110", label:"Museos y Galerías de Arte" },
+  { code:"713110", label:"Parques de Atracciones / Amusement Parks" },
+  { code:"713210", label:"Casinos y Entretenimiento" },
+  { code:"713910", label:"Canchas de Golf y Actividades Deportivas" },
   { code:"713940", label:"Gimnasios y Centros de Fitness" },
-  { code:"711510", label:"Artistas y Entretenimiento / Eventos" },
-  { code:"721110", label:"Hoteles y Alojamientos / Airbnb" },
+  { code:"713950", label:"Bolos y Juegos Recreativos" },
+  { code:"713990", label:"Recreación y Entretenimiento Variados" },
+
+  /* ── HOSPEDAJE Y ALIMENTOS ── */
+  { code:"721110", label:"Hoteles y Alojamientos" },
+  { code:"721191", label:"Airbnb / Vacation Rental / B&B" },
+  { code:"721310", label:"Campamentos y Parques RV" },
+  { code:"722310", label:"Servicios de Catering" },
+  { code:"722320", label:"Preparación de Comidas / Meal Prep" },
   { code:"722330", label:"Camiones de Comida / Food Trucks" },
+  { code:"722410", label:"Bares y Cantinas" },
   { code:"722511", label:"Restaurantes de Servicio Completo" },
   { code:"722513", label:"Comida Rápida y Cafeterías" },
-  { code:"812111", label:"Salones de Belleza / Barberías" },
-  { code:"812112", label:"Nail Salons / Estética" },
+  { code:"722515", label:"Snack Bars y Juguerías" },
+
+  /* ── SERVICIOS PERSONALES ── */
+  { code:"811111", label:"Mecánica Automotriz / Auto Repair" },
+  { code:"811112", label:"Frenos y Escape / Exhaust" },
+  { code:"811113", label:"Transmisiones Automotrices" },
+  { code:"811118", label:"Talleres Mecánicos Generales" },
+  { code:"811121", label:"Pintura de Carros / Auto Body" },
+  { code:"811191", label:"Detailing y Lavado de Autos" },
+  { code:"811192", label:"Llanterías / Tire Services" },
+  { code:"811212", label:"Reparación de Computadoras / Tech Repair" },
+  { code:"811310", label:"Reparación de Electrodomésticos" },
+  { code:"812111", label:"Salones de Belleza / Hair Salons" },
+  { code:"812112", label:"Barberías / Barbershops" },
+  { code:"812113", label:"Nail Salons / Uñas y Estética" },
+  { code:"812191", label:"Spas y Masajes" },
+  { code:"812199", label:"Estética y Belleza Varios" },
+  { code:"812210", label:"Funerarias / Funeral Services" },
   { code:"812310", label:"Lavanderías y Tintorería" },
+  { code:"812320", label:"Lavandería de Ropa / Dry Cleaning" },
   { code:"812910", label:"Servicios de Mascotas / Pet Grooming" },
-  { code:"236115", label:"Construcción de Viviendas / General Contractor" },
-  { code:"236220", label:"Construcción Comercial e Industrial" },
-  { code:"238110", label:"Plomería / Plumbing" },
-  { code:"238210", label:"Electricidad / Electrical" },
-  { code:"238220", label:"Aire Acondicionado / HVAC" },
+  { code:"812921", label:"Fotografía y Retrato / Photo Studio" },
+  { code:"812922", label:"Copia e Impresión / Copy & Print" },
+  { code:"812990", label:"Servicios Personales Varios" },
+
+  /* ── IGLESIAS Y NONPROFIT ── */
   { code:"813110", label:"Iglesias y Organizaciones Religiosas" },
+  { code:"813211", label:"Fundaciones Comunitarias" },
   { code:"813212", label:"Fundaciones Benéficas / Nonprofit" },
-  { code:"813319", label:"ONGs y Organizaciones Sin Fines de Lucro" }
+  { code:"813219", label:"Organizaciones de Caridad" },
+  { code:"813311", label:"Defensa y Derechos Civiles / Advocacy" },
+  { code:"813319", label:"ONGs y Organizaciones Sin Fines de Lucro" },
+  { code:"813410", label:"Clubes Cívicos y Fraternales" },
+  { code:"813910", label:"Asociaciones Empresariales y Gremiales" },
+  { code:"813990", label:"Organizaciones Sin Fines de Lucro Varios" }
 ];
 
 let naicsSelected = [];
@@ -1553,10 +1824,74 @@ async function submitForm(e) {
     document.getElementById('naics-search').focus(); return;
   }
 
+  // ── Validar dirección del negocio ──
+  const bizAddr1 = document.querySelector('[name="biz_addr1"]');
+  if (!bizAddr1 || !bizAddr1.value.trim()) {
+    alert('Por favor ingresa la dirección del negocio.');
+    bizAddr1 && bizAddr1.scrollIntoView({behavior:'smooth', block:'center'});
+    bizAddr1 && bizAddr1.focus(); return;
+  }
+
+  // ── Validar dirección del propietario 1 ──
+  const ownerAddr1 = document.querySelector('[name="owner1_addr1"]');
+  if (!ownerAddr1 || !ownerAddr1.value.trim()) {
+    alert('Por favor ingresa la dirección residencial del propietario principal.');
+    ownerAddr1 && ownerAddr1.scrollIntoView({behavior:'smooth', block:'center'});
+    ownerAddr1 && ownerAddr1.focus(); return;
+  }
+
   const form = document.getElementById('formation-form');
   const fd   = new FormData(form);
   const data = {};
   fd.forEach((val, key) => { data[key] = val; });
+
+  // ── Ensamblar dirección del negocio ──
+  data.business_address = [
+    data.biz_addr1,
+    data.biz_addr2,
+    data.biz_city,
+    data.biz_state,
+    data.biz_zip
+  ].filter(v => v && v.trim()).join(', ');
+
+  // ── Ensamblar dirección de mailing (si difiere) ──
+  if (data.mail_addr1 && data.mail_addr1.trim()) {
+    data.mailing_address = [
+      data.mail_addr1,
+      data.mail_addr2,
+      data.mail_city,
+      data.mail_state,
+      data.mail_zip
+    ].filter(v => v && v.trim()).join(', ');
+  } else {
+    data.mailing_address = data.business_address;
+  }
+
+  // ── Ensamblar dirección del propietario 1 ──
+  data.owner1_address = [
+    data.owner1_addr1,
+    data.owner1_addr2,
+    data.owner1_city,
+    data.owner1_state_addr,
+    data.owner1_zip
+  ].filter(v => v && v.trim()).join(', ');
+
+  // ── Ensamblar dirección de propietarios adicionales ──
+  for (let n = 2; n <= 5; n++) {
+    if (data['owner' + n + '_addr1']) {
+      data['owner' + n + '_address'] = [
+        data['owner' + n + '_addr1'],
+        data['owner' + n + '_addr2'],
+        data['owner' + n + '_city'],
+        data['owner' + n + '_state_addr'],
+        data['owner' + n + '_zip']
+      ].filter(v => v && v.trim()).join(', ');
+    }
+  }
+
+  // ── Nombre completo propietario 1 ──
+  data.owner1_full_name = [data.owner1_first, data.owner1_middle, data.owner1_last]
+    .filter(v => v && v.trim()).join(' ');
 
   // Agregar NAICS seleccionados
   data.business_naics = document.getElementById('business_naics_hidden').value;
