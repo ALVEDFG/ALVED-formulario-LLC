@@ -2,8 +2,29 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Formulario de Formación | Alved Financial Group</title>
+
+<!-- PWA Meta Tags -->
+<meta name="application-name" content="Alved Forms">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Alved Forms">
+<meta name="theme-color" content="#1A1F6B">
+<meta name="mobile-web-app-capable" content="yes">
+
+<!-- SEO & Open Graph -->
+<meta name="description" content="Forma tu LLC, Corporación o Nonprofit con Alved Financial Group. Proceso 100% en línea.">
+<meta property="og:title" content="Formulario de Formación | Alved Financial Group">
+<meta property="og:description" content="Inicia el proceso de formación de tu empresa hoy.">
+<meta property="og:image" content="icon-512.png">
+<meta property="og:type" content="website">
+
+<!-- Icons -->
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="icon-apple.png">
+<link rel="manifest" href="manifest.json">
+
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -1577,6 +1598,92 @@ async function submitForm(e) {
   form.style.display = 'none';
   document.getElementById('success-screen').style.display = 'block';
   window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+
+<!-- ── PWA Install Banner ── -->
+<div id="pwa-banner" style="
+  display:none;position:fixed;bottom:0;left:0;right:0;z-index:1200;
+  background:linear-gradient(135deg,#1A1F6B,#6C47FF);
+  padding:14px 20px 18px;box-shadow:0 -4px 24px rgba(108,71,255,.4);
+  font-family:'Montserrat',sans-serif;
+  padding-bottom:calc(14px + env(safe-area-inset-bottom))">
+  <div style="display:flex;align-items:center;gap:14px;max-width:480px;margin:0 auto">
+    <img src="icon-192.png" alt="Alved" style="width:44px;height:44px;border-radius:10px;flex-shrink:0">
+    <div style="flex:1">
+      <div style="color:#fff;font-size:.85rem;font-weight:700;margin-bottom:2px">Instala la App de Alved</div>
+      <div style="color:rgba(255,255,255,.75);font-size:.74rem">Acceso rápido desde tu pantalla de inicio</div>
+    </div>
+    <button id="pwa-install-btn" style="
+      background:#fff;color:#1A1F6B;border:none;border-radius:8px;
+      padding:9px 18px;font-size:.8rem;font-weight:800;cursor:pointer;
+      font-family:'Montserrat',sans-serif;white-space:nowrap;flex-shrink:0">
+      Instalar
+    </button>
+    <button onclick="document.getElementById('pwa-banner').style.display='none'" style="
+      background:none;border:none;color:rgba(255,255,255,.6);cursor:pointer;
+      font-size:1.2rem;line-height:1;padding:4px;flex-shrink:0">✕</button>
+  </div>
+</div>
+
+<!-- iOS Install Hint (Safari no soporta beforeinstallprompt) -->
+<div id="ios-banner" style="
+  display:none;position:fixed;bottom:0;left:0;right:0;z-index:1200;
+  background:linear-gradient(135deg,#1A1F6B,#6C47FF);
+  padding:16px 20px 20px;box-shadow:0 -4px 24px rgba(108,71,255,.4);
+  font-family:'Montserrat',sans-serif;text-align:center;
+  padding-bottom:calc(16px + env(safe-area-inset-bottom))">
+  <div style="color:#fff;font-size:.85rem;font-weight:700;margin-bottom:6px">Instala esta app en tu iPhone</div>
+  <div style="color:rgba(255,255,255,.8);font-size:.78rem;line-height:1.6">
+    Toca <strong style="color:#fff">Compartir</strong> <span style="font-size:1rem">⎙</span> y luego<br>
+    <strong style="color:#fff">"Agregar a pantalla de inicio"</strong> 📲
+  </div>
+  <button onclick="document.getElementById('ios-banner').style.display='none';localStorage.setItem('pwa-dismissed','1')"
+    style="margin-top:12px;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.4);
+    color:#fff;border-radius:8px;padding:7px 20px;font-size:.78rem;font-weight:600;
+    cursor:pointer;font-family:'Montserrat',sans-serif">Entendido</button>
+</div>
+
+<script>
+/* ── Service Worker Registration ── */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(() => {
+      /* Silently fail if SW not available (file:// protocol) */
+    });
+  });
+}
+
+/* ── PWA Install Prompt (Android / Chrome) ── */
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  if (!localStorage.getItem('pwa-dismissed')) {
+    setTimeout(() => { document.getElementById('pwa-banner').style.display = 'block'; }, 3000);
+  }
+});
+
+document.getElementById('pwa-install-btn').addEventListener('click', async () => {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  const { outcome } = await deferredPrompt.userChoice;
+  deferredPrompt = null;
+  document.getElementById('pwa-banner').style.display = 'none';
+  if (outcome === 'accepted') localStorage.setItem('pwa-installed', '1');
+});
+
+window.addEventListener('appinstalled', () => {
+  document.getElementById('pwa-banner').style.display = 'none';
+  localStorage.setItem('pwa-installed', '1');
+});
+
+/* ── iOS Safari Install Hint ── */
+const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+const isStandalone = window.navigator.standalone === true;
+const dismissed = localStorage.getItem('pwa-dismissed');
+if (isIOS && !isStandalone && !dismissed) {
+  setTimeout(() => { document.getElementById('ios-banner').style.display = 'block'; }, 4000);
 }
 </script>
 </body>
