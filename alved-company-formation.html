@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formación de Compañías | Alved Financial Group</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:  #1A1F6B;
+    --royal: #2B2DB5;
+    --bright:#1A73E8;
+    --gold:  #C8A84B;
+    --silver:#C8D0E0;
+    --offwh: #F4F6FC;
+    --dark:  #111827;
+    --mid:   #6B7280;
+    --light: #E8ECF8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Montserrat', sans-serif; color: var(--dark); background: #fff; }
+  a { text-decoration: none; color: inherit; }
+
+  /* ── NAV ── */
+  nav {
+    background: var(--navy);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 40px; height: 68px; position: sticky; top: 0; z-index: 100;
+    box-shadow: 0 2px 20px rgba(26,31,107,.4);
+  }
+  .nav-logo { display: flex; align-items: center; gap: 0; }
+  .nav-logo img { height: 52px; width: auto; }
+  .nav-links { display: flex; gap: 28px; }
+  .nav-links a { color: var(--silver); font-size: .82rem; font-weight: 500; letter-spacing: .5px; transition: color .2s; }
+  .nav-links a:hover { color: #fff; }
+  .nav-cta {
+    background: var(--bright); color: #fff !important;
+    padding: 8px 20px; border-radius: 5px; font-weight: 600 !important;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(135deg, var(--navy) 0%, #0D1254 60%, #091060 100%);
+    padding: 100px 40px 80px; text-align: center; position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; top: -50%; left: -20%;
+    width: 600px; height: 600px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(26,115,232,.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-badge {
+    display: inline-block; background: rgba(26,115,232,.15); border: 1px solid rgba(26,115,232,.4);
+    color: #90B8F8; font-size: .75rem; font-weight: 600; letter-spacing: 2px;
+    padding: 6px 18px; border-radius: 20px; text-transform: uppercase; margin-bottom: 24px;
+  }
+  .hero h1 { color: #fff; font-size: 3rem; font-weight: 800; line-height: 1.15; margin-bottom: 20px; }
+  .hero h1 span { color: var(--bright); }
+  .hero p { color: var(--silver); font-size: 1.1rem; max-width: 600px; margin: 0 auto 36px; line-height: 1.7; }
+  .hero-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--bright); color: #fff; padding: 14px 32px;
+    border-radius: 6px; font-weight: 700; font-size: .95rem; transition: transform .2s, box-shadow .2s;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(26,115,232,.4); }
+  .btn-outline {
+    border: 2px solid rgba(255,255,255,.3); color: #fff; padding: 14px 32px;
+    border-radius: 6px; font-weight: 600; font-size: .95rem; transition: border-color .2s, background .2s;
+  }
+  .btn-outline:hover { border-color: #fff; background: rgba(255,255,255,.08); }
+  .hero-stats {
+    display: flex; justify-content: center; gap: 48px; margin-top: 64px;
+    border-top: 1px solid rgba(255,255,255,.1); padding-top: 40px; flex-wrap: wrap;
+  }
+  .stat-num { color: #fff; font-size: 2.2rem; font-weight: 800; }
+  .stat-num span { color: var(--bright); }
+  .stat-label { color: var(--silver); font-size: .8rem; margin-top: 4px; }
+
+  /* ── SECTION WRAPPER ── */
+  .section { padding: 80px 40px; }
+  .section-alt { background: var(--offwh); }
+  .container { max-width: 1100px; margin: 0 auto; }
+  .section-label {
+    text-align: center; font-size: .75rem; font-weight: 700; letter-spacing: 3px;
+    color: var(--bright); text-transform: uppercase; margin-bottom: 12px;
+  }
+  .section-title { text-align: center; font-size: 2rem; font-weight: 800; color: var(--navy); margin-bottom: 12px; }
+  .section-sub { text-align: center; color: var(--mid); font-size: 1rem; max-width: 560px; margin: 0 auto 48px; line-height: 1.7; }
+
+  /* ── WHY CARDS ── */
+  .why-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
+  .why-card {
+    background: #fff; border: 1px solid var(--light); border-radius: 12px; padding: 32px 24px;
+    text-align: center; transition: box-shadow .25s, transform .25s;
+  }
+  .why-card:hover { box-shadow: 0 12px 40px rgba(26,31,107,.1); transform: translateY(-4px); }
+  .why-icon { font-size: 2.2rem; margin-bottom: 16px; }
+  .why-card h3 { color: var(--navy); font-size: 1.05rem; font-weight: 700; margin-bottom: 10px; }
+  .why-card p { color: var(--mid); font-size: .88rem; line-height: 1.65; }
+
+  /* ── COMPANY TYPES ── */
+  .types-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 20px; }
+  .type-card {
+    background: #fff; border-left: 4px solid var(--bright); border-radius: 0 10px 10px 0;
+    padding: 24px 28px; box-shadow: 0 2px 12px rgba(0,0,0,.06);
+  }
+  .type-card.featured { border-left-color: var(--navy); }
+  .type-badge {
+    display: inline-block; background: var(--light); color: var(--royal);
+    font-size: .7rem; font-weight: 700; letter-spacing: 1px; padding: 3px 10px;
+    border-radius: 20px; text-transform: uppercase; margin-bottom: 10px;
+  }
+  .type-card h3 { color: var(--navy); font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; }
+  .type-card p { color: var(--mid); font-size: .88rem; line-height: 1.65; }
+  .type-pros { margin-top: 12px; }
+  .type-pros span {
+    display: inline-block; background: var(--offwh); color: var(--navy);
+    font-size: .75rem; font-weight: 600; padding: 3px 10px; border-radius: 12px; margin: 3px 3px 0 0;
+  }
+
+  /* ── PRICING ── */
+  .pricing-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; align-items: start; }
+  .pkg {
+    background: #fff; border: 1.5px solid var(--light); border-radius: 16px;
+    overflow: hidden; transition: box-shadow .25s, transform .25s;
+  }
+  .pkg:hover { box-shadow: 0 16px 48px rgba(26,31,107,.12); transform: translateY(-4px); }
+  .pkg.featured {
+    border-color: var(--bright); box-shadow: 0 8px 32px rgba(26,115,232,.18);
+    transform: scale(1.03);
+  }
+  .pkg.featured:hover { transform: scale(1.03) translateY(-4px); }
+  .pkg-header { padding: 28px 24px 24px; text-align: center; }
+  .pkg.basic .pkg-header   { background: var(--offwh); }
+  .pkg.featured .pkg-header { background: linear-gradient(135deg, var(--navy), var(--royal)); }
+  .pkg.vip .pkg-header      { background: linear-gradient(135deg, #0D1254, #1A1F6B); }
+  .pkg-label {
+    font-size: .7rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .pkg.basic .pkg-label   { color: var(--mid); }
+  .pkg.featured .pkg-label { color: rgba(255,255,255,.7); }
+  .pkg.vip .pkg-label      { color: var(--gold); }
+  .pkg-badge {
+    display: inline-block; background: var(--bright); color: #fff;
+    font-size: .7rem; font-weight: 700; padding: 3px 12px; border-radius: 20px;
+    margin-bottom: 12px;
+  }
+  .pkg-name { font-size: 1.4rem; font-weight: 800; margin-bottom: 12px; }
+  .pkg.basic .pkg-name    { color: var(--navy); }
+  .pkg.featured .pkg-name  { color: #fff; }
+  .pkg.vip .pkg-name       { color: #fff; }
+  .pkg-price { font-size: 2.8rem; font-weight: 800; line-height: 1; }
+  .pkg.basic .pkg-price   { color: var(--navy); }
+  .pkg.featured .pkg-price { color: #fff; }
+  .pkg.vip .pkg-price      { color: var(--gold); }
+  .pkg-price sup { font-size: 1.2rem; vertical-align: top; margin-top: .5rem; }
+  .pkg-price-note { font-size: .78rem; margin-top: 6px; }
+  .pkg.basic .pkg-price-note { color: var(--mid); }
+  .pkg.featured .pkg-price-note { color: rgba(255,255,255,.6); }
+  .pkg.vip .pkg-price-note { color: rgba(255,255,255,.5); }
+  .pkg-body { padding: 24px; }
+  .pkg-feature {
+    display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px;
+    font-size: .87rem; color: var(--dark); line-height: 1.5;
+  }
+  .pkg-feature .ck { color: var(--bright); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+  .pkg-feature .xx { color: #D1D5DB; flex-shrink: 0; margin-top: 1px; }
+  .pkg-feature.dim { color: #9CA3AF; }
+  .pkg-divider { border: none; border-top: 1px solid var(--light); margin: 16px 0; }
+  .pkg-cta {
+    display: block; text-align: center; padding: 13px; border-radius: 8px;
+    font-weight: 700; font-size: .92rem; transition: filter .2s, transform .2s; margin-top: 20px;
+  }
+  .pkg.basic .pkg-cta    { background: var(--offwh); color: var(--navy); border: 1.5px solid var(--light); }
+  .pkg.featured .pkg-cta  { background: var(--bright); color: #fff; }
+  .pkg.vip .pkg-cta       { background: linear-gradient(135deg, var(--navy), var(--royal)); color: #fff; }
+  .pkg-cta:hover { filter: brightness(1.08); transform: translateY(-1px); }
+
+  /* ── PROCESS ── */
+  .process-steps { display: flex; flex-direction: column; gap: 0; max-width: 780px; margin: 0 auto; }
+  .step {
+    display: flex; gap: 24px; align-items: flex-start; position: relative; padding-bottom: 32px;
+  }
+  .step:last-child { padding-bottom: 0; }
+  .step:not(:last-child)::after {
+    content: ''; position: absolute; left: 22px; top: 46px;
+    width: 2px; bottom: 0; background: var(--light);
+  }
+  .step-num {
+    width: 46px; height: 46px; border-radius: 50%; background: var(--navy);
+    color: #fff; font-weight: 800; font-size: 1rem; display: flex;
+    align-items: center; justify-content: center; flex-shrink: 0; z-index: 1;
+  }
+  .step-content h3 { color: var(--navy); font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+  .step-content p  { color: var(--mid); font-size: .88rem; line-height: 1.65; }
+
+  /* ── ADDON ── */
+  .addon-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 20px; }
+  .addon-card {
+    background: #fff; border: 1px solid var(--light); border-radius: 12px; padding: 24px 28px;
+    display: flex; gap: 16px; align-items: flex-start; transition: box-shadow .2s;
+  }
+  .addon-card:hover { box-shadow: 0 8px 28px rgba(26,31,107,.09); }
+  .addon-icon { font-size: 2rem; flex-shrink: 0; }
+  .addon-card h3 { color: var(--navy); font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
+  .addon-price { color: var(--bright); font-weight: 700; font-size: .88rem; margin-bottom: 8px; }
+  .addon-card p  { color: var(--mid); font-size: .86rem; line-height: 1.6; }
+
+  /* ── NEWS ── */
+  .news-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+  .news-card {
+    background: #fff; border: 1px solid var(--light); border-radius: 12px; overflow: hidden;
+    transition: box-shadow .25s, transform .25s;
+  }
+  .news-card:hover { box-shadow: 0 10px 32px rgba(26,31,107,.1); transform: translateY(-3px); }
+  .news-img { height: 140px; background: linear-gradient(135deg, var(--navy), var(--royal)); position: relative; overflow: hidden; }
+  .news-img-label {
+    position: absolute; bottom: 10px; left: 14px;
+    background: var(--bright); color: #fff; font-size: .68rem; font-weight: 700;
+    padding: 3px 10px; border-radius: 12px; letter-spacing: .5px;
+  }
+  .news-body { padding: 18px 20px; }
+  .news-date { color: var(--mid); font-size: .74rem; margin-bottom: 8px; }
+  .news-title { color: var(--navy); font-size: .92rem; font-weight: 700; line-height: 1.45; margin-bottom: 10px; }
+  .news-excerpt { color: var(--mid); font-size: .82rem; line-height: 1.6; }
+  .news-link { color: var(--bright); font-size: .8rem; font-weight: 600; margin-top: 12px; display: inline-block; }
+  #news-container { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+  .loading-news { text-align: center; padding: 40px; color: var(--mid); grid-column: 1/-1; }
+
+  /* ── FAQ ── */
+  .faq-list { max-width: 780px; margin: 0 auto; }
+  .faq-item { border-bottom: 1px solid var(--light); }
+  .faq-q {
+    width: 100%; background: none; border: none; text-align: left;
+    padding: 20px 0; display: flex; justify-content: space-between; align-items: center;
+    cursor: pointer; font-family: 'Montserrat', sans-serif;
+    color: var(--navy); font-size: .95rem; font-weight: 600;
+  }
+  .faq-arrow { color: var(--bright); font-size: 1.2rem; transition: transform .25s; }
+  .faq-a {
+    max-height: 0; overflow: hidden; transition: max-height .3s ease;
+    color: var(--mid); font-size: .88rem; line-height: 1.7;
+  }
+  .faq-a.open { max-height: 300px; padding-bottom: 18px; }
+  .faq-arrow.open { transform: rotate(45deg); }
+
+  /* ── CTA BANNER ── */
+  .cta-banner {
+    background: linear-gradient(135deg, var(--navy), var(--royal));
+    padding: 80px 40px; text-align: center;
+  }
+  .cta-banner h2 { color: #fff; font-size: 2.2rem; font-weight: 800; margin-bottom: 12px; }
+  .cta-banner p  { color: var(--silver); font-size: 1rem; margin-bottom: 36px; max-width: 500px; margin-left: auto; margin-right: auto; }
+  .cta-banner .btn-primary { font-size: 1rem; padding: 16px 40px; }
+
+  /* ── FOOTER ── */
+  footer { background: #0A0E3F; padding: 48px 40px 24px; }
+  .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; max-width: 1100px; margin: 0 auto 40px; }
+  .footer-brand p { color: rgba(255,255,255,.5); font-size: .83rem; line-height: 1.7; margin-top: 12px; }
+  footer h4 { color: #fff; font-size: .85rem; font-weight: 700; margin-bottom: 14px; letter-spacing: .5px; }
+  footer ul { list-style: none; }
+  footer ul li { margin-bottom: 10px; }
+  footer ul li a { color: rgba(255,255,255,.5); font-size: .82rem; transition: color .2s; }
+  footer ul li a:hover { color: #fff; }
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,.08); padding-top: 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    max-width: 1100px; margin: 0 auto;
+    color: rgba(255,255,255,.35); font-size: .78rem;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .why-grid, .pricing-grid, .types-grid, .news-grid, #news-container { grid-template-columns: 1fr; }
+    .addon-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .hero h1 { font-size: 2.1rem; }
+    .pkg.featured { transform: none; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── NAV ───────────────────────────────────────────────────────────────────── -->
+<nav>
+  <div class="nav-logo">
+    <img src="ALVED_LOGO-ok_Positivo.png" alt="Alved Financial Group">
+  </div>
+  <div class="nav-links">
+    <a href="#why">¿Por qué Alved?</a>
+    <a href="#types">Tipos de Compañía</a>
+    <a href="#pricing">Paquetes</a>
+    <a href="#process">Proceso</a>
+    <a href="#news">Noticias</a>
+    <a href="#contact" class="nav-cta">Agenda tu Consulta</a>
+  </div>
+</nav>
+
+<!-- ── HERO ──────────────────────────────────────────────────────────────────── -->
+<section class="hero" id="home">
+  <div class="hero-badge">🏛️ Formación de Compañías en EE.UU.</div>
+  <h1>Tu empresa, <span>lista</span><br>desde el día uno.</h1>
+  <p>LLC, Corporation, S-Corp y más. Formación profesional con asesoría personalizada, documentación completa y acompañamiento durante todo tu primer año.</p>
+  <div class="hero-btns">
+    <a href="#pricing" class="btn-primary">Ver Paquetes</a>
+    <a href="#contact" class="btn-outline">Consulta Gratuita</a>
+  </div>
+  <div class="hero-stats">
+    <div>
+      <div class="stat-num">3<span>+</span></div>
+      <div class="stat-label">Tipos de entidades</div>
+    </div>
+    <div>
+      <div class="stat-num">$<span>50</span></div>
+      <div class="stat-label">Renovaciones futuras</div>
+    </div>
+    <div>
+      <div class="stat-num">1<span>er</span></div>
+      <div class="stat-label">Año con seguimiento incluido</div>
+    </div>
+    <div>
+      <div class="stat-num">100<span>%</span></div>
+      <div class="stat-label">Respaldo profesional</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── WHY ───────────────────────────────────────────────────────────────────── -->
+<section class="section" id="why">
+  <div class="container">
+    <div class="section-label">¿Por qué elegirnos?</div>
+    <h2 class="section-title">Más que un trámite. Un inicio sólido.</h2>
+    <p class="section-sub">Servicios como LegalZoom procesan formularios. Nosotros entendemos tu negocio y te orientamos para estructurarlo correctamente desde el principio.</p>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="why-icon">🎯</div>
+        <h3>Asesoría Personalizada</h3>
+        <p>Una hora contigo para entender tu modelo de negocio y elegir la estructura legal correcta. No todos los negocios son iguales.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">📋</div>
+        <h3>Documentación Completa</h3>
+        <p>EIN, Operating Agreement personalizado, búsqueda de nombre y registro estatal — todo incluido en un solo proceso.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">🤝</div>
+        <h3>Seguimiento Real</h3>
+        <p>No desaparecemos tras el registro. Check-in a los 2 meses y sesión de estrategia fiscal de fin de año incluidos.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">🔄</div>
+        <h3>Renovación Garantizada</h3>
+        <p>El primer año de renovación estatal está incluido en los paquetes Premium y VIP. Nunca pierdas el good standing.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">💰</div>
+        <h3>Estrategia Fiscal</h3>
+        <p>Sesión de fin de año para revisar estrategias de reducción de impuestos y preparar el cierre del año correctamente.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">🚀</div>
+        <h3>Presencia Digital (VIP)</h3>
+        <p>Logo, landing page, Instagram y Google Maps configurados. Tu empresa lista para ser encontrada desde el día uno.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TIPOS ──────────────────────────────────────────────────────────────────── -->
+<section class="section section-alt" id="types">
+  <div class="container">
+    <div class="section-label">Entidades Disponibles</div>
+    <h2 class="section-title">¿Qué tipo de compañía necesitas?</h2>
+    <p class="section-sub">Formamos todo tipo de entidades en EE.UU. Durante tu asesoría analizamos cuál es la estructura correcta para tu negocio específico.</p>
+    <div class="types-grid">
+
+      <div class="type-card featured">
+        <div class="type-badge">⭐ Más Popular</div>
+        <h3>LLC — Limited Liability Company</h3>
+        <p>La estructura más elegida por pequeños y medianos empresarios. Protege tus activos personales de las deudas del negocio, ofrece flexibilidad en la tributación y es fácil de administrar. Ideal para la gran mayoría de negocios.</p>
+        <div class="type-pros">
+          <span>Protección personal</span><span>Flexibilidad fiscal</span><span>Fácil administración</span><span>Pocos requisitos</span>
+        </div>
+      </div>
+
+      <div class="type-card">
+        <div class="type-badge">Inversión & Escala</div>
+        <h3>Corporation (C-Corp)</h3>
+        <p>Ideal si buscas inversión externa, tienes múltiples accionistas o planeas escalar rápidamente. Base estándar para startups que consideran rondas de inversión o salida al mercado público.</p>
+        <div class="type-pros">
+          <span>Múltiples accionistas</span><span>Inversión externa</span><span>Credibilidad corporativa</span>
+        </div>
+      </div>
+
+      <div class="type-card">
+        <div class="type-badge">Ahorro Fiscal</div>
+        <h3>S-Corporation (Elección Fiscal)</h3>
+        <p>No es una entidad separada, sino una elección fiscal disponible para LLCs y Corporations elegibles. Puede reducir significativamente los impuestos de self-employment cuando el negocio supera cierto nivel de ingresos. Disponible como Add-On.</p>
+        <div class="type-pros">
+          <span>Reduce self-employment tax</span><span>Pass-through taxation</span><span>Ahorro fiscal real</span>
+        </div>
+      </div>
+
+      <div class="type-card">
+        <div class="type-badge">Propósito Social</div>
+        <h3>Nonprofit / Sin Fines de Lucro</h3>
+        <p>Para organizaciones con misión benéfica, educativa, religiosa o social. Con la formación correcta puedes aplicar a la exención fiscal federal bajo el estatus 501(c)(3) del IRS, lo que permite recibir donaciones deducibles.</p>
+        <div class="type-pros">
+          <span>Exención fiscal federal</span><span>Donaciones deducibles</span><span>Misión social</span>
+        </div>
+      </div>
+
+    </div>
+    <div style="text-align:center; margin-top:36px; color:var(--mid); font-size:.88rem;">
+      ¿No sabes cuál elegir? <a href="#contact" style="color:var(--bright); font-weight:600;">Agenda tu consulta gratuita →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── PRICING ────────────────────────────────────────────────────────────────── -->
+<section class="section" id="pricing">
+  <div class="container">
+    <div class="section-label">Paquetes y Precios</div>
+    <h2 class="section-title">Elige tu paquete de formación</h2>
+    <p class="section-sub">Todos los paquetes incluyen el fee de formación de Alved. El fee del estado se cobra por separado según el estado de formación.</p>
+
+    <div class="pricing-grid">
+
+      <!-- BÁSICO -->
+      <div class="pkg basic">
+        <div class="pkg-header">
+          <div class="pkg-label">Esencial</div>
+          <div class="pkg-name">Básico</div>
+          <div class="pkg-price"><sup>$</sup>247</div>
+          <div class="pkg-price-note">+ fee del estado</div>
+        </div>
+        <div class="pkg-body">
+          <div class="pkg-feature"><span class="ck">✓</span> Formación de la compañía</div>
+          <div class="pkg-feature"><span class="ck">✓</span> Búsqueda de nombre</div>
+          <div class="pkg-feature"><span class="ck">✓</span> EIN incluido</div>
+          <div class="pkg-feature"><span class="ck">✓</span> Operating Agreement (template estándar)</div>
+          <hr class="pkg-divider">
+          <div class="pkg-feature dim"><span class="xx">✗</span> Sin asesoría personalizada</div>
+          <div class="pkg-feature dim"><span class="xx">✗</span> Sin sesiones de seguimiento</div>
+          <div class="pkg-feature dim"><span class="xx">✗</span> Renovación no incluida</div>
+          <a href="alved-company-form.html?pkg=basico" class="pkg-cta">Comenzar con Básico</a>
+        </div>
+      </div>
+
+      <!-- PREMIUM -->
+      <div class="pkg featured">
+        <div class="pkg-header">
+          <div class="pkg-badge">⭐ Más Popular</div>
+          <div class="pkg-label">Producto Estrella</div>
+          <div class="pkg-name">Premium</div>
+          <div class="pkg-price"><sup>$</sup>397</div>
+          <div class="pkg-price-note">+ fee del estado</div>
+        </div>
+        <div class="pkg-body">
+          <div class="pkg-feature"><span class="ck">✓</span> Todo lo del plan Básico</div>
+          <div class="pkg-feature"><span class="ck">✓</span> <strong>1 hora de asesoría personalizada</strong></div>
+          <div class="pkg-feature"><span class="ck">✓</span> Estructuración según tipo de negocio</div>
+          <div class="pkg-feature"><span class="ck">✓</span> Operating Agreement personalizado</div>
+          <div class="pkg-feature"><span class="ck">✓</span> Check-in a los 2 meses de apertura</div>
+          <div class="pkg-feature"><span class="ck">✓</span> Sesión de Estrategia Fiscal (Q4)</div>
+          <div class="pkg-feature"><span class="ck">✓</span> <strong>Renovación año 1 incluida</strong></div>
+          <div class="pkg-feature"><span class="ck">✓</span> Renovaciones futuras: $50 + fee estado</div>
+          <a href="alved-company-form.html?pkg=premium" class="pkg-cta">Comenzar con Premium</a>
+        </div>
+      </div>
+
+      <!-- VIP -->
+      <div class="pkg vip">
+        <div class="pkg-header">
+          <div class="pkg-label" style="color:var(--gold);">Presencia Completa</div>
+          <div class="pkg-name">VIP</div>
+          <div class="pkg-price"><sup>$</sup>997</div>
+          <div class="pkg-price-note">+ fee del estado</div>
+        </div>
+        <div class="pkg-body">
+          <div class="pkg-feature"><span class="ck">✓</span> Todo lo del plan Premium</div>
+          <div class="pkg-feature"><span class="ck" style="color:var(--gold)">✓</span> <strong>Logo profesional a medida</strong></div>
+          <div class="pkg-feature"><span class="ck" style="color:var(--gold)">✓</span> Landing page con formularios y calendario</div>
+          <div class="pkg-feature"><span class="ck" style="color:var(--gold)">✓</span> Dominio + hosting incluido (1 año)</div>
+          <div class="pkg-feature"><span class="ck" style="color:var(--gold)">✓</span> Perfil Instagram con tu branding</div>
+          <div class="pkg-feature"><span class="ck" style="color:var(--gold)">✓</span> Google Business Profile (Maps)</div>
+          <div class="pkg-feature"><span class="ck">✓</span> Renovaciones futuras: $50 + fee estado</div>
+          <a href="alved-company-form.html?pkg=vip" class="pkg-cta">Comenzar con VIP</a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Add-On -->
+    <div style="margin-top:48px;">
+      <div class="section-label" style="margin-bottom:20px;">Servicios Adicionales</div>
+      <div class="addon-grid">
+        <div class="addon-card">
+          <div class="addon-icon">📊</div>
+          <div>
+            <h3>Elección de S-Corporation</h3>
+            <div class="addon-price">$97 + tramitación IRS</div>
+            <p>Radicación del Form 2553 con el IRS para clasificar tu LLC o Corp como S-Corp. Puede reducir significativamente tu carga de self-employment tax. Lo analizamos durante tu asesoría.</p>
+          </div>
+        </div>
+        <div class="addon-card">
+          <div class="addon-icon">📱</div>
+          <div>
+            <h3>Manejo Mensual de Redes Sociales</h3>
+            <div class="addon-price">Precio a consultar</div>
+            <p>Gestión activa de tu Instagram y otras redes. Publicaciones, estrategia de contenido y crecimiento orgánico. Disponible como servicio mensual recurrente.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PROCESO ────────────────────────────────────────────────────────────────── -->
+<section class="section section-alt" id="process">
+  <div class="container">
+    <div class="section-label">Cómo funciona</div>
+    <h2 class="section-title">Tu empresa en 6 pasos</h2>
+    <p class="section-sub">Desde la consulta inicial hasta el cierre de tu primer año, estamos contigo en cada etapa.</p>
+    <div class="process-steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div class="step-content">
+          <h3>Consulta Inicial</h3>
+          <p>Agendas tu cita gratuita. Conversamos sobre tu negocio, tus metas y el tipo de entidad más conveniente para ti. Sin presión, sin compromiso.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-content">
+          <h3>Búsqueda y Registro</h3>
+          <p>Verificamos la disponibilidad del nombre que eliges y radicamos todos los documentos con el estado correspondiente.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div class="step-content">
+          <h3>EIN y Documentación</h3>
+          <p>Obtenemos tu EIN con el IRS y preparamos tu Operating Agreement personalizado. Te entregamos toda la documentación oficial organizada.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <div class="step-content">
+          <h3>Check-in a los 2 Meses <span style="font-size:.75rem; color:var(--bright);">(Premium y VIP)</span></h3>
+          <p>Revisamos juntos que tengas tu cuenta bancaria abierta, redes sociales activas y los procesos clave de tu negocio en marcha.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">05</div>
+        <div class="step-content">
+          <h3>Sesión de Estrategia Fiscal Q4 <span style="font-size:.75rem; color:var(--bright);">(Premium y VIP)</span></h3>
+          <p>Antes del cierre del año revisamos tu situación financiera, estrategias para reducir impuestos y cómo prepararte para el próximo año fiscal.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">06</div>
+        <div class="step-content">
+          <h3>Renovación Anual</h3>
+          <p>Gestionamos tu renovación estatal para que tu empresa siempre esté en good standing. Incluida el primer año en paquetes Premium y VIP.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── NEWS ───────────────────────────────────────────────────────────────────── -->
+<section class="section" id="news">
+  <div class="container">
+    <div class="section-label">Mantente Informado</div>
+    <h2 class="section-title">Noticias y Recursos Empresariales</h2>
+    <p class="section-sub">Las últimas novedades sobre formación de empresas, impuestos y regulaciones en EE.UU.</p>
+    <div id="news-container">
+      <div class="loading-news">⏳ Cargando noticias recientes...</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FAQ ────────────────────────────────────────────────────────────────────── -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-label">Preguntas Frecuentes</div>
+    <h2 class="section-title">Lo que más nos preguntan</h2>
+    <div class="faq-list" style="margin-top:40px;">
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          ¿Cuánto tiempo tarda la formación de una LLC?
+          <span class="faq-arrow">+</span>
+        </button>
+        <div class="faq-a">Depende del estado. En la mayoría de los estados el proceso toma entre 5 y 15 días hábiles. Algunos estados como Wyoming y Delaware son más rápidos. Hay opción de trámite expedito en muchos estados pagando un fee adicional al estado.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          ¿Necesito vivir en EE.UU. para formar una empresa aquí?
+          <span class="faq-arrow">+</span>
+        </button>
+        <div class="faq-a">No. Extranjeros de cualquier país pueden formar una LLC o Corporation en EE.UU. sin ser residentes ni ciudadanos. Sí necesitarás un Registered Agent en el estado de formación, que nosotros podemos ayudarte a obtener.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          ¿Qué es el EIN y para qué sirve?
+          <span class="faq-arrow">+</span>
+        </button>
+        <div class="faq-a">El EIN (Employer Identification Number) es el número de identificación fiscal de tu empresa ante el IRS. Lo necesitas para abrir una cuenta bancaria comercial, contratar empleados, pagar impuestos y en muchos trámites comerciales. Está incluido en todos nuestros paquetes.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          ¿Qué diferencia hay entre el Operating Agreement template y el personalizado?
+          <span class="faq-arrow">+</span>
+        </button>
+        <div class="faq-a">El template es un documento estándar válido legalmente que cubre los fundamentos. El Operating Agreement personalizado (incluido en Premium y VIP) refleja la estructura específica de tu negocio: porcentajes de participación, roles de los socios, procedimientos de toma de decisiones y cláusulas adaptadas a tu operación particular.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          ¿Cuándo conviene elegir la elección de S-Corp?
+          <span class="faq-arrow">+</span>
+        </button>
+        <div class="faq-a">La elección de S-Corp generalmente tiene sentido cuando tu negocio genera ganancias netas consistentes de $50,000 o más al año. A ese nivel, el ahorro en self-employment taxes puede superar los costos adicionales de compliance que trae la S-Corp. Lo analizamos juntos durante tu asesoría para ver si aplica en tu caso.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          ¿Qué sucede si no renuevo mi empresa a tiempo?
+          <span class="faq-arrow">+</span>
+        </button>
+        <div class="faq-a">Si no presentas la renovación anual al estado, tu empresa puede perder el estatus de "Good Standing" y eventualmente ser disuelta administrativamente. Esto puede afectar contratos, cuentas bancarias y protecciones legales. Por eso la renovación anual incluida en nuestros paquetes Premium y VIP es un beneficio crítico.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ────────────────────────────────────────────────────────────────────── -->
+<section class="cta-banner" id="contact">
+  <div>
+    <h2>¿Listo para formar tu empresa?</h2>
+    <p>Agenda tu consulta gratuita hoy. Sin compromiso, sin presión. Solo conversamos sobre tu negocio y lo que necesitas.</p>
+    <a href="https://alvedfinancialgroup.com" class="btn-primary">Agendar Consulta Gratuita →</a>
+    <div style="margin-top:24px; color:rgba(255,255,255,.5); font-size:.82rem;">
+      📧 info@alvedfinancialgroup.com &nbsp;|&nbsp; 🌐 alvedfinancialgroup.com
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ──────────────────────────────────────────────────────────────────── -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div style="margin-bottom:12px;">
+        <img src="ALVED_LOGO-ok_Positivo.png" alt="Alved Financial Group" style="height:52px; width:auto;">
+      </div>
+      <p>Expertos en formación de compañías, asesoría financiera y crecimiento empresarial en Estados Unidos.</p>
+    </div>
+    <div>
+      <h4>Servicios</h4>
+      <ul>
+        <li><a href="#pricing">Paquete Básico</a></li>
+        <li><a href="#pricing">Paquete Premium</a></li>
+        <li><a href="#pricing">Paquete VIP</a></li>
+        <li><a href="#pricing">S-Corp Add-On</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Compañías</h4>
+      <ul>
+        <li><a href="#types">LLC</a></li>
+        <li><a href="#types">Corporation</a></li>
+        <li><a href="#types">S-Corporation</a></li>
+        <li><a href="#types">Nonprofit</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Contacto</h4>
+      <ul>
+        <li><a href="#contact">Agendar Consulta</a></li>
+        <li><a href="mailto:info@alvedfinancialgroup.com">Email</a></li>
+        <li><a href="https://alvedfinancialgroup.com">Sitio Web</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Alved Financial Group. Todos los derechos reservados.</span>
+    <span>Alved no provee asesoría legal. Consulta con un abogado para asuntos específicos.</span>
+  </div>
+</footer>
+
+<script>
+// ── FAQ toggle ────────────────────────────────────────────────────────────────
+function toggleFaq(btn) {
+  const a = btn.nextElementSibling;
+  const arrow = btn.querySelector('.faq-arrow');
+  a.classList.toggle('open');
+  arrow.classList.toggle('open');
+}
+
+// ── NEWS (RSS via rss2json) ───────────────────────────────────────────────────
+const NEWS_FEEDS = [
+  'https://feeds.feedburner.com/entrepreneur/latest',
+  'https://rss.nytimes.com/services/xml/rss/nyt/Business.xml',
+];
+
+const STATIC_NEWS = [
+  {
+    title: 'IRS actualiza guías para LLC de un solo miembro en 2025',
+    date: 'Junio 2025',
+    excerpt: 'El IRS publicó nuevas guías aclarando los requisitos de reporte para LLCs de un solo miembro y su tratamiento como entidades ignoradas.',
+    tag: 'IRS & Impuestos',
+    link: 'https://irs.gov',
+    color: '#1A1F6B'
+  },
+  {
+    title: 'Estados con menores costos de formación de LLC en 2025',
+    date: 'Mayo 2025',
+    excerpt: 'Wyoming y Nuevo México siguen liderando como los estados más económicos para formar una LLC, con fees estatales bajos y sin impuesto estatal sobre la renta corporativa.',
+    tag: 'Formación',
+    link: 'https://sba.gov',
+    color: '#2B2DB5'
+  },
+  {
+    title: 'Beneficios de la elección S-Corp para negocios que crecen',
+    date: 'Abril 2025',
+    excerpt: 'Con el crecimiento post-pandemia, más negocios están considerando la elección de S-Corp para reducir la carga de self-employment tax a medida que sus ingresos aumentan.',
+    tag: 'Estrategia Fiscal',
+    link: 'https://irs.gov',
+    color: '#1A73E8'
+  },
+  {
+    title: 'Google Business Profile: la herramienta gratuita que más clientes ignoran',
+    date: 'Marzo 2025',
+    excerpt: 'Un perfil bien optimizado en Google Maps puede ser la fuente #1 de clientes locales para pequeños negocios. Así es cómo aprovecharlo al máximo.',
+    tag: 'Presencia Digital',
+    link: 'https://business.google.com',
+    color: '#0D6E3C'
+  },
+  {
+    title: 'Nuevas reglas FinCEN: Beneficial Ownership Information (BOI)',
+    date: 'Febrero 2025',
+    excerpt: 'Las empresas formadas después de 2024 deben reportar información sobre sus propietarios beneficiarios al FinCEN. Conoce los plazos y requisitos.',
+    tag: 'Regulación',
+    link: 'https://fincen.gov',
+    color: '#7C3AED'
+  },
+  {
+    title: '5 errores que cometen los emprendedores al formar su primera LLC',
+    date: 'Enero 2025',
+    excerpt: 'Desde no separar finanzas personales y del negocio hasta no tener un Operating Agreement, estos son los errores más costosos al iniciar una empresa.',
+    tag: 'Emprendimiento',
+    link: '#contact',
+    color: '#C8A84B'
+  },
+];
+
+function renderNews(items) {
+  const container = document.getElementById('news-container');
+  container.innerHTML = items.map(n => `
+    <div class="news-card">
+      <div class="news-img" style="background:linear-gradient(135deg, ${n.color || '#1A1F6B'}, #0D1254)">
+        <span class="news-img-label">${n.tag}</span>
+      </div>
+      <div class="news-body">
+        <div class="news-date">📅 ${n.date}</div>
+        <div class="news-title">${n.title}</div>
+        <div class="news-excerpt">${n.excerpt}</div>
+        <a href="${n.link}" target="_blank" class="news-link">Leer más →</a>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function loadNews() {
+  try {
+    const url = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent('https://feeds.feedburner.com/entrepreneur/latest')}&api_key=public&count=6`;
+    const res = await fetch(url, { signal: AbortSignal.timeout(5000) });
+    const data = await res.json();
+    if (data.status === 'ok' && data.items?.length) {
+      const mapped = data.items.slice(0,6).map(item => ({
+        title: item.title,
+        date: new Date(item.pubDate).toLocaleDateString('es-US', {month:'long', year:'numeric'}),
+        excerpt: item.description?.replace(/<[^>]+>/g,'').slice(0,160) + '...',
+        tag: 'Negocios',
+        link: item.link,
+        color: '#1A1F6B'
+      }));
+      renderNews(mapped);
+      return;
+    }
+  } catch(e) {}
+  renderNews(STATIC_NEWS);
+}
+
+window.addEventListener('load', loadNews);
+</script>
+
+<!-- WhatsApp Floating Button -->
+<style>
+.wa-float {
+  position: fixed; bottom: 28px; right: 28px; z-index: 9999;
+  width: 60px; height: 60px; border-radius: 50%;
+  background: #25D366; display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 20px rgba(37,211,102,.5);
+  transition: transform .2s, box-shadow .2s; text-decoration: none;
+}
+.wa-float:hover { transform: scale(1.1); box-shadow: 0 6px 30px rgba(37,211,102,.6); }
+.wa-float svg { width: 32px; height: 32px; fill: #fff; }
+.wa-tooltip {
+  position: absolute; right: 70px; background: #111; color: #fff;
+  font-size: .74rem; font-family: 'Montserrat', sans-serif; font-weight: 500;
+  white-space: nowrap; padding: 6px 12px; border-radius: 6px;
+  opacity: 0; pointer-events: none; transition: opacity .2s;
+}
+.wa-float:hover .wa-tooltip { opacity: 1; }
+</style>
+<a href="https://wa.me/13053052194?text=Hola%2C%20me%20interesa%20información%20sobre%20formación%20de%20compañías%20con%20Alved%20Financial%20Group"
+   target="_blank" class="wa-float" aria-label="Contáctanos por WhatsApp">
+  <div class="wa-tooltip">¿Preguntas? Escríbenos</div>
+  <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+    <path d="M16 .5C7.44.5.5 7.44.5 16c0 2.83.74 5.49 2.04 7.8L.5 31.5l7.93-2.08A15.45 15.45 0 0016 31.5C24.56 31.5 31.5 24.56 31.5 16S24.56.5 16 .5zm7.85 21.57c-.33.93-1.93 1.78-2.65 1.9-.68.11-1.54.16-2.49-.16-.57-.19-1.31-.44-2.25-.86-3.96-1.71-6.55-5.7-6.75-5.97-.2-.27-1.63-2.17-1.63-4.14 0-1.97 1.03-2.94 1.4-3.34.37-.4.8-.5 1.07-.5.27 0 .54 0 .77.01.25.01.58-.1.91.69.33.8 1.13 2.77 1.23 2.97.1.2.17.43.03.7-.13.27-.2.43-.4.67-.2.23-.42.52-.6.7-.2.2-.4.4-.17.79.23.38 1.03 1.7 2.21 2.76 1.52 1.35 2.8 1.77 3.19 1.97.38.2.6.17.82-.1.23-.27.97-1.13 1.23-1.52.27-.38.53-.32.9-.19.37.13 2.33 1.1 2.73 1.3.4.2.67.3.77.47.1.17.1.97-.23 1.9z"/>
+  </svg>
+</a>
+
+</body>
+</html>

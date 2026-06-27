@@ -1,0 +1,1583 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formulario de Formación | Alved Financial Group</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:        #1A1F6B;
+    --blue:        #1A73E8;
+    --purple:      #6C47FF;
+    --purple-mid:  #8B5CF6;
+    --purple-light:#A78BFA;
+    --purple-pale: #F5F3FF;
+    --dark:        #111827;
+    --mid:         #6B7280;
+    --light:       #E8ECF8;
+    --offwh:       #F4F6FC;
+    --gold:        #C8A84B;
+    --green:       #059669;
+    --red:         #DC2626;
+    --grad-head:   linear-gradient(135deg,#1A1F6B 0%,#3D2DB5 55%,#6C47FF 100%);
+    --grad-btn:    linear-gradient(135deg,#1A73E8 0%,#6C47FF 100%);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Montserrat',sans-serif;background:#EEEEFF;color:var(--dark)}
+
+  /* ── NAV ── */
+  nav{background:var(--navy);padding:0 40px;height:64px;display:flex;align-items:center;
+    justify-content:space-between;position:sticky;top:0;z-index:100;
+    box-shadow:0 2px 20px rgba(108,71,255,.35)}
+  nav img{height:46px;width:auto}
+  nav a{color:rgba(255,255,255,.7);font-size:.82rem;font-weight:500;text-decoration:none;transition:color .2s}
+  nav a:hover{color:#fff}
+
+  /* ── HERO ── */
+  .form-hero{background:var(--grad-head);position:relative;overflow:hidden;
+    display:flex;align-items:stretch;min-height:260px}
+  .hero-content{padding:48px 40px 40px;flex:1;position:relative;z-index:2;
+    display:flex;flex-direction:column;justify-content:center}
+  .hero-content::before{content:'';position:absolute;top:-40%;left:-10%;width:50%;height:200%;
+    background:rgba(255,255,255,.04);border-radius:50%;pointer-events:none;z-index:0}
+  .hero-img-col{width:44%;flex-shrink:0;position:relative;overflow:hidden;min-height:240px}
+  .hero-img-col img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
+  .hero-img-col::before{content:'';position:absolute;inset:0;
+    background:linear-gradient(to right,var(--navy) 0%,rgba(26,31,107,.6) 35%,transparent 70%);
+    z-index:1;pointer-events:none}
+  .hero-img-col::after{content:'';position:absolute;inset:0;
+    background:linear-gradient(to bottom,transparent 50%,rgba(108,71,255,.25) 100%);
+    z-index:1;pointer-events:none}
+  .pkg-badge{display:inline-flex;gap:8px;align-items:center;
+    background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.28);
+    border-radius:30px;padding:8px 22px;margin-bottom:18px;backdrop-filter:blur(4px);
+    position:relative;z-index:1;width:fit-content}
+  .pkg-badge span{color:#fff;font-size:.82rem;font-weight:600}
+  .form-hero h1{color:#fff;font-size:1.85rem;font-weight:800;margin-bottom:8px;
+    position:relative;z-index:1}
+  .form-hero p{color:rgba(255,255,255,.78);font-size:.9rem;position:relative;
+    z-index:1;line-height:1.55;max-width:420px}
+
+  /* ── PROGRESS ── */
+  .progress-bar{background:#fff;border-bottom:1px solid var(--light);
+    padding:16px 24px;display:flex;justify-content:center;
+    box-shadow:0 2px 10px rgba(108,71,255,.08)}
+  .steps{display:flex;align-items:center}
+  .step-pill{display:flex;align-items:center;gap:8px;font-size:.78rem;font-weight:600;color:var(--mid)}
+  .step-pill.active{color:var(--purple)}
+  .step-pill.done{color:var(--green)}
+  .step-num{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;
+    justify-content:center;font-size:.74rem;font-weight:700;background:var(--light);
+    color:var(--mid);flex-shrink:0;transition:all .3s}
+  .step-pill.active .step-num{background:var(--grad-btn);color:#fff;box-shadow:0 4px 14px rgba(108,71,255,.45)}
+  .step-pill.done .step-num{background:var(--green);color:#fff}
+  .step-conn{width:40px;height:2px;background:var(--light);margin:0 10px;transition:background .3s}
+  .step-conn.done{background:var(--green)}
+
+  /* ── ESTIMATE BANNER ── */
+  .estimate-banner{background:var(--grad-btn);border-radius:12px;padding:16px 24px;
+    margin-bottom:20px;display:none;align-items:center;justify-content:space-between;
+    flex-wrap:wrap;gap:12px;box-shadow:0 4px 22px rgba(108,71,255,.32)}
+  .estimate-banner.show{display:flex}
+  .est-left .est-label{color:rgba(255,255,255,.8);font-size:.78rem;font-weight:600;margin-bottom:2px}
+  .est-left .est-total{color:#fff;font-size:1.5rem;font-weight:800}
+  .est-left .est-break{color:rgba(255,255,255,.7);font-size:.74rem;margin-top:2px}
+  .est-right{color:rgba(255,255,255,.7);font-size:.72rem;text-align:right;max-width:220px;line-height:1.5}
+
+  /* ── WRAP ── */
+  .form-wrap{max-width:800px;margin:0 auto;padding:32px 16px 80px}
+
+  /* ── CARD ── */
+  .form-card{background:#fff;border-radius:14px;border:1px solid var(--light);
+    padding:28px;margin-bottom:20px;box-shadow:0 4px 20px rgba(108,71,255,.06);transition:box-shadow .2s}
+  .form-card:focus-within{box-shadow:0 4px 24px rgba(108,71,255,.14)}
+  .card-header{margin-bottom:20px}
+  .card-header h2{font-size:1rem;font-weight:700;color:var(--navy);
+    display:flex;align-items:center;gap:10px;margin-bottom:4px}
+  .card-header h2 .step-tag{background:var(--grad-btn);color:#fff;font-size:.68rem;
+    padding:2px 10px;border-radius:20px;font-weight:700;white-space:nowrap}
+  .card-header .sub{font-size:.8rem;color:var(--mid);line-height:1.5}
+  .divider{border:none;border-top:1px solid var(--light);margin:20px 0}
+
+  /* ── PACKAGES ── */
+  .pkg-selector{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .pkg-opt{border:2px solid var(--light);border-radius:12px;padding:16px 12px;
+    cursor:pointer;transition:all .2s;text-align:center;position:relative;background:#fff}
+  .pkg-opt:hover{border-color:var(--purple-light);background:var(--purple-pale);
+    transform:translateY(-2px);box-shadow:0 4px 16px rgba(108,71,255,.15)}
+  .pkg-opt.selected{border-color:var(--purple);background:var(--purple-pale);
+    box-shadow:0 4px 20px rgba(108,71,255,.22)}
+  .pkg-opt.selected.vip{border-color:var(--navy);background:#EEF2FF}
+  .pkg-opt input[type=radio]{position:absolute;opacity:0}
+  .pkg-name-sm{font-size:.85rem;font-weight:700;color:var(--navy);margin-bottom:4px}
+  .pkg-price-sm{font-size:1.15rem;font-weight:800;color:var(--purple)}
+  .pkg-opt.vip .pkg-price-sm{color:var(--navy)}
+  .pkg-star{font-size:.68rem;background:var(--grad-btn);color:#fff;padding:2px 8px;
+    border-radius:10px;margin-bottom:6px;display:inline-block}
+
+  /* ── GRID ── */
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .form-grid.c1{grid-template-columns:1fr}
+  .form-grid.c3{grid-template-columns:1fr 1fr 1fr}
+  .full{grid-column:1/-1}
+
+  /* ── FIELDS ── */
+  .field{display:flex;flex-direction:column;gap:5px}
+  .field label{font-size:.8rem;font-weight:600;color:var(--dark);letter-spacing:.01em}
+  .field label .req{color:var(--red)}
+  .field label .opt{color:var(--mid);font-weight:400;font-size:.71rem}
+  .field input,.field select,.field textarea{
+    border:1.5px solid var(--light);border-radius:8px;padding:10px 13px;
+    font-family:'Montserrat',sans-serif;font-size:.88rem;color:var(--dark);
+    background:#fff;transition:border-color .2s,box-shadow .2s;outline:none;width:100%}
+  .field input:focus,.field select:focus,.field textarea:focus{
+    border-color:var(--purple);box-shadow:0 0 0 3px rgba(108,71,255,.12)}
+  .field input.is-valid{border-color:var(--green)}
+  .field input.is-invalid{border-color:var(--red)}
+  .field textarea{resize:vertical;min-height:80px}
+  .field .hint{font-size:.73rem;color:var(--mid);line-height:1.4}
+  .field .hint.ok{color:var(--green);font-weight:600}
+  .field .hint.err{color:var(--red);font-weight:600}
+
+  /* id-type badge */
+  .id-badge{display:none;font-size:.7rem;font-weight:700;padding:2px 9px;
+    border-radius:10px;margin-top:3px;width:fit-content}
+  .id-badge.ssn{background:#DCFCE7;color:#166534;display:inline-block}
+  .id-badge.itin{background:#FEF3C7;color:#92400E;display:inline-block}
+  .id-badge.pass{background:#EEF4FD;color:var(--navy);display:inline-block}
+
+  /* ── NAICS ── */
+  .naics-wrap{position:relative}
+  .naics-dropdown{position:absolute;top:100%;left:0;right:0;z-index:50;
+    background:#fff;border:1.5px solid var(--purple);border-top:none;
+    border-radius:0 0 10px 10px;max-height:230px;overflow-y:auto;
+    box-shadow:0 8px 28px rgba(108,71,255,.16);display:none}
+  .naics-dropdown.open{display:block}
+  .naics-item{padding:9px 14px;cursor:pointer;display:flex;align-items:center;
+    justify-content:space-between;font-size:.83rem;border-bottom:1px solid var(--light);
+    transition:background .15s;gap:8px}
+  .naics-item:hover:not(.disabled){background:var(--purple-pale)}
+  .naics-item.disabled{opacity:.4;cursor:default}
+  .naics-code{font-size:.7rem;background:var(--light);color:var(--mid);padding:2px 7px;
+    border-radius:8px;font-weight:600;flex-shrink:0}
+  .naics-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;min-height:0}
+  .naics-tag{display:inline-flex;align-items:center;gap:6px;
+    background:var(--purple-pale);border:1px solid var(--purple-light);
+    color:var(--purple);font-size:.75rem;font-weight:600;padding:4px 10px;border-radius:20px}
+  .naics-rm{cursor:pointer;color:var(--purple-mid);font-size:1rem;line-height:1;font-weight:700}
+  .naics-rm:hover{color:var(--red)}
+
+  /* ── ADDRESS ── */
+  .addr-block{background:#F8F8FF;border:1px solid #DDD8FF;border-radius:10px;padding:16px}
+  .addr-title{font-size:.75rem;font-weight:700;color:var(--purple);
+    text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px;display:flex;align-items:center;gap:6px}
+
+  /* ── SAME ADDRESS TOGGLE ── */
+  .same-addr{background:var(--purple-pale);border:1.5px solid var(--purple-light);
+    border-radius:10px;padding:14px 16px;margin:14px 0;
+    display:flex;align-items:flex-start;gap:12px;cursor:pointer}
+  .same-addr input{accent-color:var(--purple);width:17px;height:17px;flex-shrink:0;margin-top:2px}
+  .same-addr .sa-text{font-size:.84rem;font-weight:600;color:var(--navy)}
+  .same-addr .sa-sub{font-size:.73rem;color:var(--mid);margin-top:2px}
+
+  /* ── INFO BOX ── */
+  .info-box{border-left:3px solid var(--purple-light);border-radius:0 8px 8px 0;
+    padding:12px 16px;font-size:.79rem;color:var(--navy);line-height:1.6;margin:12px 0}
+  .info-box.violet{background:var(--purple-pale);border-left-color:var(--purple-light)}
+  .info-box.gold{background:#FFFBEB;border-left-color:var(--gold);color:#78350F}
+
+  /* ── NAME ROWS ── */
+  .name-row{display:flex;align-items:center;gap:10px}
+  .name-num{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;
+    justify-content:center;font-size:.72rem;font-weight:800;flex-shrink:0;color:#fff}
+  .name-num.r{background:var(--purple)}
+  .name-num.o{background:var(--mid)}
+
+  /* ── OWNER ── */
+  .owner-header-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+  .add-owner-btn{background:none;border:1.5px solid var(--purple);color:var(--purple);
+    border-radius:8px;padding:7px 16px;font-size:.78rem;font-weight:700;
+    cursor:pointer;font-family:'Montserrat',sans-serif;transition:all .2s}
+  .add-owner-btn:hover{background:var(--purple-pale)}
+  .owner-block{background:#FAFAFF;border-radius:10px;padding:18px;
+    margin-bottom:14px;border:1px solid #DDD8FF}
+  .owner-block-title{font-size:.85rem;font-weight:700;color:var(--navy);
+    margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}
+  .rm-owner{color:var(--mid);font-size:.74rem;cursor:pointer;background:none;
+    border:none;font-family:'Montserrat',sans-serif;transition:color .2s}
+  .rm-owner:hover{color:var(--red)}
+
+  /* ── RA OPTIONS ── */
+  .ra-opts{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}
+  .ra-opt{border:2px solid var(--light);border-radius:12px;padding:16px;
+    cursor:pointer;transition:all .2s;position:relative}
+  .ra-opt:hover{border-color:var(--purple-light);background:var(--purple-pale)}
+  .ra-opt.selected{border-color:var(--purple);background:var(--purple-pale)}
+  .ra-opt input{position:absolute;opacity:0}
+  .ra-title{font-size:.85rem;font-weight:700;color:var(--navy);margin-bottom:4px}
+  .ra-desc{font-size:.74rem;color:var(--mid);line-height:1.4}
+  .ra-price{font-size:.8rem;font-weight:700;color:var(--purple);margin-top:6px}
+
+  /* ── CONTACT SAME AS ── */
+  .cs-opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+  .cs-opt{border:2px solid var(--light);border-radius:12px;padding:14px;
+    cursor:pointer;transition:all .2s;text-align:center;position:relative}
+  .cs-opt:hover{border-color:var(--purple-light);background:var(--purple-pale)}
+  .cs-opt.selected{border-color:var(--purple);background:var(--purple-pale)}
+  .cs-opt input{position:absolute;opacity:0}
+  .cs-icon{font-size:1.6rem;margin-bottom:4px}
+  .cs-label{font-size:.82rem;font-weight:700;color:var(--navy)}
+  .cs-sub{font-size:.72rem;color:var(--mid);margin-top:2px}
+
+  /* ── DISCLAIMER ── */
+  .disclaimer-box{background:linear-gradient(135deg,rgba(26,31,107,.04),rgba(108,71,255,.07));
+    border:1.5px solid var(--purple-light);border-radius:12px;padding:20px;margin-top:18px}
+  .disclaimer-box h4{font-size:.8rem;font-weight:700;color:var(--navy);
+    text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px}
+  .disclaimer-txt{font-size:.75rem;color:#4B5563;line-height:1.75;margin-bottom:16px}
+  .disclaimer-txt strong{color:var(--dark)}
+
+  /* ── CHECKBOXES ── */
+  .check-group{display:flex;flex-direction:column;gap:10px}
+  .check-item{display:flex;align-items:flex-start;gap:10px;cursor:pointer}
+  .check-item input[type=checkbox]{width:17px;height:17px;accent-color:var(--purple);
+    flex-shrink:0;margin-top:2px}
+  .check-item span{font-size:.83rem;color:var(--dark);line-height:1.55}
+
+  /* ── SUBMIT ── */
+  .submit-area{text-align:center;margin-top:28px}
+  .btn-submit{background:var(--grad-btn);color:#fff;border:none;
+    padding:17px 56px;border-radius:10px;font-size:1rem;font-weight:800;
+    font-family:'Montserrat',sans-serif;cursor:pointer;transition:all .2s;
+    box-shadow:0 6px 24px rgba(108,71,255,.42);letter-spacing:.02em}
+  .btn-submit:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(108,71,255,.52);filter:brightness(1.05)}
+  .btn-submit:disabled{opacity:.6;cursor:not-allowed;transform:none}
+  .submit-note{font-size:.76rem;color:var(--mid);margin-top:12px}
+
+  /* ── SUCCESS ── */
+  .success-screen{display:none;text-align:center;padding:64px 24px;
+    background:#fff;border-radius:14px;border:1px solid var(--light);
+    box-shadow:0 4px 24px rgba(108,71,255,.09)}
+  .success-icon{font-size:3.5rem;margin-bottom:16px}
+  .success-screen h2{color:var(--navy);font-size:1.5rem;font-weight:800;margin-bottom:8px}
+  .success-screen p{color:var(--mid);font-size:.92rem;line-height:1.7;max-width:480px;margin:0 auto 24px}
+  .success-steps{background:var(--purple-pale);border-radius:10px;padding:20px;
+    text-align:left;max-width:480px;margin:0 auto}
+  .success-steps h3{font-size:.88rem;color:var(--navy);font-weight:700;margin-bottom:10px}
+  .success-steps li{font-size:.83rem;color:var(--dark);line-height:1.8;margin-left:18px}
+
+  /* ── PKG DETAIL PANEL ── */
+  .pkg-detail{display:none;margin-top:16px;border-radius:12px;overflow:hidden;
+    border:1.5px solid var(--purple-light);animation:fadeIn .25s ease}
+  .pkg-detail.show{display:block}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+  .pkg-detail-header{padding:14px 18px;display:flex;align-items:center;gap:12px}
+  .pkg-detail-header .pd-name{font-size:.95rem;font-weight:800;color:#fff}
+  .pkg-detail-header .pd-price{font-size:.82rem;color:rgba(255,255,255,.8);font-weight:500}
+  .pkg-detail-body{background:#fff;padding:16px 18px}
+  .pkg-items{display:grid;grid-template-columns:1fr 1fr;gap:6px 20px}
+  .pkg-item{display:flex;align-items:flex-start;gap:8px;font-size:.8rem;color:var(--dark);line-height:1.4;padding:4px 0}
+  .pkg-item .pi-ck{font-size:.9rem;flex-shrink:0;margin-top:1px}
+  .pkg-item .pi-xx{font-size:.9rem;flex-shrink:0;margin-top:1px;opacity:.45}
+  .pkg-item.dim{opacity:.5}
+  @media(max-width:600px){.pkg-items{grid-template-columns:1fr}}
+
+  /* ── WA ── */
+  .wa-btn{position:fixed;bottom:28px;right:28px;z-index:999;width:58px;height:58px;
+    border-radius:50%;background:#25D366;display:flex;align-items:center;
+    justify-content:center;box-shadow:0 4px 20px rgba(37,211,102,.45);
+    transition:transform .2s,box-shadow .2s;text-decoration:none}
+  .wa-btn:hover{transform:scale(1.1);box-shadow:0 6px 28px rgba(37,211,102,.55)}
+  .wa-btn svg{width:30px;height:30px;fill:#fff}
+  .wa-tooltip{position:absolute;right:68px;background:#222;color:#fff;
+    font-size:.74rem;white-space:nowrap;padding:5px 12px;border-radius:6px;
+    font-family:'Montserrat',sans-serif;font-weight:500;opacity:0;
+    pointer-events:none;transition:opacity .2s}
+  .wa-btn:hover .wa-tooltip{opacity:1}
+
+  /* ══════════════════════════════════════════
+     RESPONSIVE — TABLET (max 768px)
+  ══════════════════════════════════════════ */
+  @media(max-width:768px){
+    .hero-img-col{width:38%}
+    .hero-content{padding:36px 28px 32px}
+    .form-hero h1{font-size:1.55rem}
+    .form-grid.c3{grid-template-columns:1fr 1fr}
+    .form-wrap{padding:24px 12px 60px}
+    .form-card{padding:22px 18px}
+    nav{padding:0 20px}
+  }
+
+  /* ══════════════════════════════════════════
+     RESPONSIVE — MOBILE (max 600px)
+  ══════════════════════════════════════════ */
+  @media(max-width:600px){
+    /* NAV */
+    nav{padding:0 14px;height:56px}
+    nav img{height:38px}
+    nav a{font-size:.74rem}
+
+    /* HERO */
+    .form-hero{flex-direction:column}
+    .hero-img-col{display:none}
+    .hero-content{padding:32px 20px 28px}
+    .form-hero h1{font-size:1.3rem}
+    .form-hero p{font-size:.84rem;max-width:100%}
+    .pkg-badge{padding:6px 16px;margin-bottom:12px}
+    .pkg-badge span{font-size:.75rem}
+
+    /* PROGRESS */
+    .progress-bar{padding:12px 10px;overflow-x:auto}
+    .steps{gap:0}
+    .step-pill{gap:5px;font-size:.7rem}
+    .step-pill span{display:none}
+    .step-num{width:26px;height:26px;font-size:.68rem}
+    .step-conn{width:20px;margin:0 4px}
+
+    /* WRAP & CARDS */
+    .form-wrap{padding:16px 10px 64px}
+    .form-card{padding:18px 14px;margin-bottom:14px;border-radius:12px}
+    .card-header h2{font-size:.9rem}
+    .card-header .sub{font-size:.75rem}
+
+    /* ESTIMATE BANNER */
+    .estimate-banner{flex-direction:column;gap:8px;text-align:center;padding:14px 16px}
+    .est-left .est-total{font-size:1.3rem}
+    .est-right{text-align:center;max-width:100%;font-size:.7rem}
+
+    /* PACKAGES */
+    .pkg-selector{grid-template-columns:1fr}
+    .pkg-opt{padding:14px 12px}
+    .pkg-items{grid-template-columns:1fr}
+
+    /* GRIDS */
+    .form-grid,.form-grid.c3,.ra-opts,.cs-opts{grid-template-columns:1fr}
+
+    /* OWNER */
+    .owner-header-row{flex-direction:column;align-items:flex-start;gap:10px}
+    .owner-block{padding:14px}
+
+    /* ADDRESS */
+    .addr-block{padding:12px}
+
+    /* NAICS */
+    .naics-dropdown{font-size:.82rem}
+    .naics-item{padding:8px 12px}
+
+    /* SUBMIT */
+    .btn-submit{width:100%;padding:16px 20px;font-size:.95rem}
+
+    /* DISCLAIMER */
+    .disclaimer-box{padding:16px}
+    .disclaimer-txt{font-size:.72rem}
+    .check-item span{font-size:.78rem}
+
+    /* PKG DETAIL */
+    .pkg-detail-header{flex-direction:column;align-items:flex-start;gap:4px;padding:12px 14px}
+    .pkg-detail-body{padding:12px 14px}
+
+    /* WHATSAPP BUTTON */
+    .wa-btn{bottom:18px;right:18px;width:50px;height:50px}
+    .wa-btn svg{width:26px;height:26px}
+  }
+
+  /* ══════════════════════════════════════════
+     RESPONSIVE — VERY SMALL (max 380px)
+  ══════════════════════════════════════════ */
+  @media(max-width:380px){
+    .form-hero h1{font-size:1.15rem}
+    .step-conn{width:12px;margin:0 2px}
+    .form-card{padding:14px 12px}
+    .btn-submit{font-size:.88rem}
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <img src="ALVED_LOGO-ok_Positivo.png" alt="Alved Financial Group">
+  <a href="alved-company-formation.html">← Volver a Paquetes</a>
+</nav>
+
+<!-- HERO -->
+<div class="form-hero">
+  <div class="hero-content">
+    <div class="pkg-badge">
+      <span id="pkg-badge-txt">Selecciona tu paquete abajo</span>
+    </div>
+    <h1>Formulario de Formación de Compañía</h1>
+    <p>Completa los datos a continuación para iniciar el proceso de formación de tu empresa con Alved Financial Group.</p>
+  </div>
+  <div class="hero-img-col">
+    <img src="empresario-analizando-graficos1.jpg" alt="Alved Financial Group - Formación de Empresas"
+         onerror="this.parentElement.style.display='none'">
+  </div>
+</div>
+
+<!-- PROGRESS -->
+<div class="progress-bar">
+  <div class="steps">
+    <div class="step-pill active" id="sp1"><div class="step-num">1</div><span>Tu Paquete</span></div>
+    <div class="step-conn" id="sc1"></div>
+    <div class="step-pill" id="sp2"><div class="step-num">2</div><span>Tu Empresa</span></div>
+    <div class="step-conn" id="sc2"></div>
+    <div class="step-pill" id="sp3"><div class="step-num">3</div><span>Propietarios</span></div>
+    <div class="step-conn" id="sc3"></div>
+    <div class="step-pill" id="sp4"><div class="step-num">4</div><span>Contacto</span></div>
+  </div>
+</div>
+
+<!-- FORM WRAP -->
+<div class="form-wrap">
+<form id="formation-form" onsubmit="submitForm(event)" novalidate>
+
+<!-- ════════════════════════════════════════════════
+     CARD 1 — PAQUETE + ENTIDAD + ESTADO
+════════════════════════════════════════════════ -->
+<div class="form-card">
+  <div class="card-header">
+    <h2><span class="step-tag">PASO 1</span> Selecciona tu Paquete y Tipo de Empresa</h2>
+    <div class="sub">Elige el paquete y el tipo de entidad que deseas registrar. Calcularemos el estimado de costos automáticamente.</div>
+  </div>
+
+  <!-- Packages -->
+  <div class="pkg-selector" style="margin-bottom:20px">
+    <label class="pkg-opt basic" id="opt-basic" onclick="selectPkg('basic')">
+      <input type="radio" name="package" value="Básico - $247">
+      <div class="pkg-name-sm">Básico</div>
+      <div class="pkg-price-sm">$247</div>
+      <div style="font-size:.71rem;color:var(--mid);margin-top:4px">+ fee del estado</div>
+    </label>
+    <label class="pkg-opt premium" id="opt-premium" onclick="selectPkg('premium')">
+      <input type="radio" name="package" value="Premium - $397">
+      <div class="pkg-star">⭐ Más Popular</div>
+      <div class="pkg-name-sm">Premium</div>
+      <div class="pkg-price-sm">$397</div>
+      <div style="font-size:.71rem;color:var(--mid);margin-top:4px">+ fee del estado</div>
+    </label>
+    <label class="pkg-opt vip" id="opt-vip" onclick="selectPkg('vip')">
+      <input type="radio" name="package" value="VIP - $997">
+      <div class="pkg-name-sm">VIP</div>
+      <div class="pkg-price-sm" style="color:var(--navy)">$997</div>
+      <div style="font-size:.71rem;color:var(--mid);margin-top:4px">+ fee del estado</div>
+    </label>
+  </div>
+
+  <!-- Package detail panel -->
+  <div class="pkg-detail" id="pkg-detail">
+    <div class="pkg-detail-header" id="pkg-detail-header"></div>
+    <div class="pkg-detail-body">
+      <div class="pkg-items" id="pkg-detail-items"></div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="form-grid">
+    <!-- Entity type -->
+    <div class="field">
+      <label>Tipo de Entidad <span class="req">*</span></label>
+      <select name="entity_type" id="entity_type" required onchange="updateEstimate();updateTitleOptions()">
+        <option value="">— Selecciona el tipo de compañía —</option>
+        <option value="LLC">LLC (Limited Liability Company)</option>
+        <option value="Corporation">Corporation (C-Corp)</option>
+        <option value="Nonprofit">Nonprofit / Sin Fines de Lucro</option>
+        <option value="Consulta">No estoy seguro — necesito asesoría</option>
+      </select>
+      <span class="hint">Si no estás seguro, te orientamos durante la asesoría sin costo adicional.</span>
+    </div>
+    <!-- State -->
+    <div class="field">
+      <label>Estado de Formación <span class="req">*</span></label>
+      <select name="state" id="state_select" required onchange="updateEstimate()">
+        <option value="">— Selecciona el estado —</option>
+        <option>Florida</option><option>Texas</option><option>New York</option>
+        <option>California</option><option>Georgia</option><option>Nevada</option>
+        <option>Wyoming</option><option>Delaware</option><option>Illinois</option>
+        <option>North Carolina</option><option>New Jersey</option><option>Virginia</option>
+        <option>Arizona</option><option>Colorado</option><option>Washington</option>
+        <option value="Otro">Otro / No estoy seguro</option>
+      </select>
+      <span class="hint">Si no sabes cuál estado elegir, lo analizamos en tu asesoría.</span>
+    </div>
+  </div>
+</div>
+
+<!-- ESTIMATE BANNER -->
+<div class="estimate-banner" id="estimate-banner">
+  <div class="est-left">
+    <div class="est-label">ESTIMADO TOTAL</div>
+    <div class="est-total" id="est-total">—</div>
+    <div class="est-break" id="est-break"></div>
+  </div>
+  <div class="est-right">*El fee estatal puede variar. Este es el costo de registro estándar. Impuestos y tarifas adicionales pueden aplicar.</div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     CARD 2 — INFORMACIÓN DE LA EMPRESA
+════════════════════════════════════════════════ -->
+<div class="form-card">
+  <div class="card-header">
+    <h2><span class="step-tag">PASO 2</span> Información de la Empresa</h2>
+    <div class="sub">Cuéntanos sobre el negocio que deseas registrar.</div>
+  </div>
+
+  <!-- Nombre opciones -->
+  <div style="font-size:.85rem;font-weight:700;color:var(--navy);margin-bottom:8px">Opciones de Nombre para la Compañía</div>
+  <div class="info-box violet">
+    <strong>¿Por qué es importante el nombre?</strong> El nombre de tu empresa es tu primera impresión. Debe ser único, con significado, fácil de recordar y no existir registro previo con el estado. Te recomendamos 3 opciones en caso de que alguna ya esté registrada.
+  </div>
+  <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:20px">
+    <div class="name-row">
+      <div class="name-num r">1</div>
+      <div class="field" style="flex:1">
+        <input type="text" name="name1" placeholder="Primera opción de nombre (requerida)" required autocomplete="off" oninput="markStep(2)">
+        <span class="hint">Campo obligatorio — esta es tu opción preferida.</span>
+      </div>
+    </div>
+    <div class="name-row">
+      <div class="name-num o">2</div>
+      <div class="field" style="flex:1">
+        <input type="text" name="name2" placeholder="Segunda opción de nombre (recomendada)" autocomplete="off">
+        <span class="hint">Recomendada en caso de que la primera ya esté tomada.</span>
+      </div>
+    </div>
+    <div class="name-row">
+      <div class="name-num o">3</div>
+      <div class="field" style="flex:1">
+        <input type="text" name="name3" placeholder="Tercera opción de nombre (opcional)" autocomplete="off">
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- Tipo de negocio / NAICS -->
+  <div class="field full" style="margin-bottom:20px">
+    <label>Tipo de Negocio / Actividad Principal <span class="req">*</span> <span class="opt">(máx. 2 opciones)</span></label>
+    <div class="naics-wrap">
+      <input type="text" id="naics-search" class="naics-input" placeholder="Busca tu tipo de negocio (ej: restaurante, construcción, consultoría...)"
+             autocomplete="off" oninput="filterNAICS(this.value)" onfocus="openNAICS()" onblur="closeNAICSDelay()">
+      <div class="naics-dropdown" id="naics-dropdown"></div>
+    </div>
+    <div class="naics-tags" id="naics-tags"></div>
+    <input type="hidden" name="business_naics" id="business_naics_hidden">
+    <span class="hint">Selecciona hasta 2 categorías. El código NAICS es requerido para ciertos trámites bancarios y gubernamentales.</span>
+  </div>
+
+  <hr class="divider">
+
+  <!-- Dirección del negocio -->
+  <div style="font-size:.85rem;font-weight:700;color:var(--navy);margin-bottom:12px">Dirección Principal del Negocio</div>
+  <div class="addr-block" style="margin-bottom:14px">
+    <div class="addr-title">📍 Dirección Física del Negocio</div>
+    <div class="form-grid c1" style="gap:10px">
+      <div class="field">
+        <label>Dirección (Línea 1) <span class="req">*</span></label>
+        <input type="text" name="biz_addr1" placeholder="Número y nombre de la calle" required autocomplete="address-line1">
+      </div>
+      <div class="field">
+        <label>Apt / Suite / Unidad <span class="opt">(si aplica)</span></label>
+        <input type="text" name="biz_addr2" id="biz_addr2" placeholder="Ej: Apt 2B, Suite 100" autocomplete="address-line2"
+               oninput="validateApt2('biz_addr2','biz_addr2_hint')">
+        <span class="hint" id="biz_addr2_hint"></span>
+      </div>
+      <div class="form-grid c3" style="gap:10px;margin:0">
+        <div class="field">
+          <label>Ciudad <span class="req">*</span></label>
+          <input type="text" name="biz_city" placeholder="Ciudad" required autocomplete="address-level2">
+        </div>
+        <div class="field">
+          <label>Estado <span class="req">*</span></label>
+          <select name="biz_state" required>
+            <option value="">— Estado —</option>
+            <option>AL</option><option>AK</option><option>AZ</option><option>AR</option><option>CA</option>
+            <option>CO</option><option>CT</option><option>DE</option><option>FL</option><option>GA</option>
+            <option>HI</option><option>ID</option><option>IL</option><option>IN</option><option>IA</option>
+            <option>KS</option><option>KY</option><option>LA</option><option>ME</option><option>MD</option>
+            <option>MA</option><option>MI</option><option>MN</option><option>MS</option><option>MO</option>
+            <option>MT</option><option>NE</option><option>NV</option><option>NH</option><option>NJ</option>
+            <option>NM</option><option>NY</option><option>NC</option><option>ND</option><option>OH</option>
+            <option>OK</option><option>OR</option><option>PA</option><option>RI</option><option>SC</option>
+            <option>SD</option><option>TN</option><option>TX</option><option>UT</option><option>VT</option>
+            <option>VA</option><option>WA</option><option>WV</option><option>WI</option><option>WY</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>ZIP Code <span class="req">*</span></label>
+          <input type="text" name="biz_zip" id="biz_zip" placeholder="00000" required maxlength="10"
+                 autocomplete="postal-code" oninput="validateZip(this)">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mailing address same? -->
+  <label class="same-addr">
+    <input type="checkbox" id="same_mailing" name="same_mailing" checked onchange="toggleMailing()">
+    <div>
+      <div class="sa-text">La dirección de correspondencia (mailing) es la misma que la dirección del negocio</div>
+      <div class="sa-sub">Desmarca si tu dirección de correo es diferente a la dirección física del negocio</div>
+    </div>
+  </label>
+
+  <div id="mailing-block" style="display:none">
+    <div class="addr-block" style="margin-top:4px">
+      <div class="addr-title">📬 Dirección de Correspondencia (Mailing)</div>
+      <div class="form-grid c1" style="gap:10px">
+        <div class="field">
+          <label>Dirección (Línea 1)</label>
+          <input type="text" name="mail_addr1" placeholder="Número y nombre de la calle" autocomplete="off">
+        </div>
+        <div class="field">
+          <label>Apt / Suite / Unidad <span class="opt">(si aplica)</span></label>
+          <input type="text" name="mail_addr2" id="mail_addr2" placeholder="Ej: Apt 2B, PO Box 100"
+                 oninput="validateApt2('mail_addr2','mail_addr2_hint')">
+          <span class="hint" id="mail_addr2_hint"></span>
+        </div>
+        <div class="form-grid c3" style="gap:10px;margin:0">
+          <div class="field">
+            <label>Ciudad</label>
+            <input type="text" name="mail_city" placeholder="Ciudad" autocomplete="off">
+          </div>
+          <div class="field">
+            <label>Estado</label>
+            <select name="mail_state">
+              <option value="">— Estado —</option>
+              <option>AL</option><option>AK</option><option>AZ</option><option>AR</option><option>CA</option>
+              <option>CO</option><option>CT</option><option>DE</option><option>FL</option><option>GA</option>
+              <option>HI</option><option>ID</option><option>IL</option><option>IN</option><option>IA</option>
+              <option>KS</option><option>KY</option><option>LA</option><option>ME</option><option>MD</option>
+              <option>MA</option><option>MI</option><option>MN</option><option>MS</option><option>MO</option>
+              <option>MT</option><option>NE</option><option>NV</option><option>NH</option><option>NJ</option>
+              <option>NM</option><option>NY</option><option>NC</option><option>ND</option><option>OH</option>
+              <option>OK</option><option>OR</option><option>PA</option><option>RI</option><option>SC</option>
+              <option>SD</option><option>TN</option><option>TX</option><option>UT</option><option>VT</option>
+              <option>VA</option><option>WA</option><option>WV</option><option>WI</option><option>WY</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>ZIP Code</label>
+            <input type="text" name="mail_zip" id="mail_zip" placeholder="00000" maxlength="10" oninput="validateZip(this)">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- S-Corp -->
+  <div class="check-group">
+    <label class="check-item">
+      <input type="checkbox" name="scorp_addon" id="scorp_cb" onchange="updateEstimate()">
+      <span><strong>Agregar elección de S-Corporation (+$97)</strong> — Radicación del Form 2553 con el IRS para reducir impuestos de self-employment. Recomendado para LLCs y Corporations con ingresos anuales mayores a $40,000.</span>
+    </label>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     CARD 3 — PROPIETARIOS / MEMBERS
+════════════════════════════════════════════════ -->
+<div class="form-card">
+  <div class="owner-header-row">
+    <div>
+      <h2 style="font-size:1rem;font-weight:700;color:var(--navy);display:flex;align-items:center;gap:10px;margin-bottom:4px">
+        <span style="background:var(--grad-btn);color:#fff;font-size:.68rem;padding:2px 10px;border-radius:20px;font-weight:700">PASO 3</span>
+        Propietarios / Members / Shareholders
+      </h2>
+      <div style="font-size:.8rem;color:var(--mid)">Información de todos los propietarios de la compañía. La suma de porcentajes debe ser 100%.</div>
+    </div>
+    <button type="button" class="add-owner-btn" onclick="addOwner()">+ Agregar Socio</button>
+  </div>
+
+  <div id="owners-container">
+    <!-- OWNER 1 (principal) -->
+    <div class="owner-block" id="owner-1">
+      <div class="owner-block-title"><span>👤 Propietario Principal</span></div>
+      <div class="form-grid" style="gap:12px">
+        <div class="field">
+          <label>Primer Nombre <span class="req">*</span></label>
+          <input type="text" name="owner1_first" placeholder="Nombre" required autocomplete="given-name">
+        </div>
+        <div class="field">
+          <label>Segundo Nombre <span class="opt">(si aplica)</span></label>
+          <input type="text" name="owner1_middle" placeholder="Middle name" autocomplete="additional-name">
+        </div>
+        <div class="field">
+          <label>Apellido(s) <span class="req">*</span></label>
+          <input type="text" name="owner1_last" placeholder="Apellido" required autocomplete="family-name">
+        </div>
+        <div class="field">
+          <label>% de Participación <span class="req">*</span></label>
+          <input type="text" name="owner1_pct" placeholder="Ej: 100%, 60%" required>
+        </div>
+        <div class="field">
+          <label>Título / Cargo <span class="req">*</span></label>
+          <select name="owner1_title" id="owner1_title" required>
+            <option value="">— Selecciona el tipo de entidad primero —</option>
+          </select>
+          <span class="hint">Las opciones cambian según el tipo de entidad seleccionado.</span>
+        </div>
+        <div class="field">
+          <label>SSN / ITIN / Pasaporte <span class="req">*</span></label>
+          <input type="text" name="owner1_id" id="owner1_id" placeholder="Solo números (9 dígitos) o N° de pasaporte"
+                 required maxlength="20" oninput="detectIdType(this,'owner1_id_badge','owner1_id_hint')">
+          <span class="id-badge" id="owner1_id_badge"></span>
+          <span class="hint" id="owner1_id_hint">Información confidencial y segura. SSN/ITIN: exactamente 9 dígitos.</span>
+        </div>
+        <div class="field">
+          <label>Fecha de Nacimiento <span class="req">*</span></label>
+          <input type="date" name="owner1_dob" required>
+        </div>
+        <div class="field">
+          <label>Estatus Migratorio <span class="req">*</span></label>
+          <select name="owner1_usstatus" required>
+            <option value="">— Selecciona —</option>
+            <option>Ciudadano americano</option>
+            <option>Residente permanente (Green Card)</option>
+            <option>Visa de trabajo (H1B, L1, O1, TN)</option>
+            <option>Visa de estudiante (F1 / OPT)</option>
+            <option>Visa de inversionista (E2 / EB-5)</option>
+            <option>Visa de turista / visitante (B1/B2)</option>
+            <option>Sin estatus migratorio / ITIN holder</option>
+            <option>Otro</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Teléfono del Propietario</label>
+          <input type="tel" name="owner1_phone" placeholder="+1 (000) 000-0000" autocomplete="tel">
+        </div>
+      </div>
+
+      <!-- Owner 1 Address -->
+      <div style="margin-top:14px">
+        <div class="addr-block">
+          <div class="addr-title">🏠 Dirección Residencial del Propietario</div>
+          <div class="form-grid c1" style="gap:10px">
+            <div class="field">
+              <label>País de Residencia <span class="req">*</span></label>
+              <input type="text" name="owner1_country" value="USA" required placeholder="Ej: USA, Colombia, Venezuela">
+            </div>
+            <div class="field">
+              <label>Dirección (Línea 1) <span class="req">*</span></label>
+              <input type="text" name="owner1_addr1" placeholder="Número y nombre de la calle" required autocomplete="street-address">
+            </div>
+            <div class="field">
+              <label>Apt / Unidad <span class="opt">(si aplica)</span></label>
+              <input type="text" name="owner1_addr2" id="owner1_addr2" placeholder="Ej: Apt 3A"
+                     oninput="validateApt2('owner1_addr2','owner1_addr2_hint')">
+              <span class="hint" id="owner1_addr2_hint"></span>
+            </div>
+            <div class="form-grid c3" style="gap:10px;margin:0">
+              <div class="field">
+                <label>Ciudad <span class="req">*</span></label>
+                <input type="text" name="owner1_city" placeholder="Ciudad" required>
+              </div>
+              <div class="field">
+                <label>Estado</label>
+                <select name="owner1_state_addr">
+                  <option value="">— Estado —</option>
+                  <option>AL</option><option>AK</option><option>AZ</option><option>AR</option><option>CA</option>
+                  <option>CO</option><option>CT</option><option>DE</option><option>FL</option><option>GA</option>
+                  <option>HI</option><option>ID</option><option>IL</option><option>IN</option><option>IA</option>
+                  <option>KS</option><option>KY</option><option>LA</option><option>ME</option><option>MD</option>
+                  <option>MA</option><option>MI</option><option>MN</option><option>MS</option><option>MO</option>
+                  <option>MT</option><option>NE</option><option>NV</option><option>NH</option><option>NJ</option>
+                  <option>NM</option><option>NY</option><option>NC</option><option>ND</option><option>OH</option>
+                  <option>OK</option><option>OR</option><option>PA</option><option>RI</option><option>SC</option>
+                  <option>SD</option><option>TN</option><option>TX</option><option>UT</option><option>VT</option>
+                  <option>VA</option><option>WA</option><option>WV</option><option>WI</option><option>WY</option>
+                  <option value="N/A">N/A (Fuera de EE.UU.)</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>ZIP Code</label>
+                <input type="text" name="owner1_zip" id="owner1_zip" placeholder="00000" maxlength="10" oninput="validateZip(this)">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="font-size:.77rem;color:var(--mid);margin-top:6px">La suma de porcentajes de todos los propietarios debe totalizar el 100%.</div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     CARD 4 — CONTACTO + AGENTE REGISTRADO
+════════════════════════════════════════════════ -->
+<div class="form-card">
+  <div class="card-header">
+    <h2><span class="step-tag">PASO 4</span> Información de Contacto</h2>
+    <div class="sub">¿Quién será el contacto principal para el seguimiento de este proceso?</div>
+  </div>
+
+  <!-- Contacto: mismo que propietario o tercero -->
+  <div style="font-size:.82rem;font-weight:700;color:var(--navy);margin-bottom:10px">El contacto principal es:</div>
+  <div class="cs-opts">
+    <label class="cs-opt selected" id="cs-owner" onclick="selectContactAs('owner')">
+      <input type="radio" name="contact_type" value="owner" checked>
+      <div class="cs-icon">👤</div>
+      <div class="cs-label">El Propietario Principal</div>
+      <div class="cs-sub">Usar datos del Paso 3</div>
+    </label>
+    <label class="cs-opt" id="cs-third" onclick="selectContactAs('third')">
+      <input type="radio" name="contact_type" value="third">
+      <div class="cs-icon">👥</div>
+      <div class="cs-label">Un Tercero / Representante</div>
+      <div class="cs-sub">Ingresar datos distintos</div>
+    </label>
+  </div>
+
+  <!-- Datos de contacto (siempre visibles) -->
+  <div class="form-grid" style="margin-bottom:16px">
+    <div class="field">
+      <label>Email de Contacto <span class="req">*</span></label>
+      <input type="email" name="contact_email" placeholder="tu@email.com" required autocomplete="email">
+    </div>
+    <div class="field">
+      <label>Teléfono / WhatsApp <span class="req">*</span></label>
+      <input type="tel" name="contact_phone" placeholder="+1 (000) 000-0000" required autocomplete="tel">
+    </div>
+    <div class="field">
+      <label>Método de Contacto Preferido</label>
+      <select name="contact_method">
+        <option>WhatsApp</option>
+        <option>Email</option>
+        <option>Llamada telefónica</option>
+        <option>Videollamada (Zoom / Google Meet)</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Horario Preferido (ET)</label>
+      <select name="contact_time">
+        <option>Mañana (8am – 12pm ET)</option>
+        <option>Tarde (12pm – 5pm ET)</option>
+        <option>Noche (5pm – 8pm ET)</option>
+        <option>Fin de semana</option>
+        <option>Cualquier horario</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Nombre de tercero (oculto por defecto) -->
+  <div id="third-party-block" style="display:none;margin-bottom:16px">
+    <div class="info-box gold">Proporciona el nombre completo del representante o persona de contacto.</div>
+    <div class="form-grid" style="margin-top:10px">
+      <div class="field">
+        <label>Nombre del Representante</label>
+        <input type="text" name="contact_name" placeholder="Nombre completo">
+      </div>
+      <div class="field">
+        <label>Relación con el Negocio</label>
+        <input type="text" name="contact_relation" placeholder="Ej: Socio, Contador, Abogado...">
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- Agente Registrado -->
+  <div style="font-size:.85rem;font-weight:700;color:var(--navy);margin-bottom:6px">Agente Registrado (Registered Agent)</div>
+  <div class="info-box violet" style="margin-bottom:12px">
+    El Agente Registrado es la persona o empresa designada para recibir documentos legales del estado en nombre de tu compañía. Es un requisito legal en todos los estados.
+  </div>
+  <div class="ra-opts">
+    <label class="ra-opt selected" id="ra-alved" onclick="selectRA('alved')">
+      <input type="radio" name="registered_agent" value="Alved Financial Group" checked>
+      <div class="ra-title">🏢 Alved Financial Group</div>
+      <div class="ra-desc">Nosotros actuamos como tu Agente Registrado oficial. Recibirás notificaciones por email de cualquier documento legal.</div>
+      <div class="ra-price">Incluido en Premium y VIP · $97/año en Básico</div>
+    </label>
+    <label class="ra-opt" id="ra-self" onclick="selectRA('self')">
+      <input type="radio" name="registered_agent" value="Propietario Principal">
+      <div class="ra-title">👤 Yo Seré Mi Propio Agente</div>
+      <div class="ra-desc">Tú mismo recibirás los documentos legales del estado. Tu dirección física (no P.O. Box) será pública en los registros del estado.</div>
+      <div class="ra-price">Sin costo adicional</div>
+    </label>
+  </div>
+
+  <hr class="divider">
+
+  <div class="form-grid c1" style="gap:12px">
+    <div class="field">
+      <label>¿Cómo nos encontraste?</label>
+      <select name="referral">
+        <option value="">— Selecciona —</option>
+        <option>Instagram / Facebook</option>
+        <option>TikTok / YouTube</option>
+        <option>Referido por un conocido</option>
+        <option>Google / Búsqueda en internet</option>
+        <option>Cliente anterior</option>
+        <option>WhatsApp</option>
+        <option>Otro</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Notas Adicionales / Preguntas</label>
+      <textarea name="notes" placeholder="¿Tienes alguna pregunta o información adicional que debamos saber antes de comenzar el proceso?"></textarea>
+    </div>
+  </div>
+
+  <!-- DISCLAIMER -->
+  <div class="disclaimer-box">
+    <h4>⚖️ Autorización y Consentimiento</h4>
+    <div class="disclaimer-txt">
+      Al marcar las casillas a continuación y enviar este formulario, usted confirma que toda la información
+      proporcionada es verdadera, exacta y completa bajo pena de falsedad. Además, <strong>autoriza expresamente a
+      Alved Financial Group LLC</strong> a utilizar la información suministrada para iniciar el proceso de formación
+      de la entidad comercial solicitada.<br><br>
+      <strong>Consentimiento de Comunicaciones:</strong> Usted <strong>autoriza a Alved Financial Group LLC a
+      contactarle por medio de mensajes de texto (SMS), WhatsApp y/o correo electrónico (email)</strong> al número y
+      dirección de email proporcionados en este formulario, con el propósito de dar seguimiento a su solicitud,
+      enviar actualizaciones del proceso, solicitar documentos adicionales y/o compartir información relacionada
+      con los servicios contratados. Esta autorización incluye comunicaciones automatizadas y/o manuales. Puede
+      revocar este consentimiento en cualquier momento contactándonos directamente.<br><br>
+      <strong>Nota Legal:</strong> Alved Financial Group LLC no es un bufete de abogados y no presta servicios
+      jurídicos. Los servicios ofrecidos son de naturaleza administrativa y de formación de entidades comerciales.
+    </div>
+    <div class="check-group">
+      <label class="check-item">
+        <input type="checkbox" name="consent_info" required>
+        <span><strong>Confirmo que la información proporcionada es verídica y completa</strong>, y autorizo a Alved Financial Group LLC a procesar mi solicitud de formación de compañía. <span class="req">*</span></span>
+      </label>
+      <label class="check-item">
+        <input type="checkbox" name="consent_comms" required>
+        <span><strong>Autorizo a Alved Financial Group LLC a contactarme por SMS, WhatsApp y email</strong> al número y correo proporcionados en este formulario para el seguimiento de mi proceso. <span class="req">*</span></span>
+      </label>
+      <label class="check-item">
+        <input type="checkbox" name="consent_legal">
+        <span>Entiendo que Alved Financial Group LLC no es un bufete de abogados y que los servicios son de naturaleza administrativa.</span>
+      </label>
+    </div>
+  </div>
+</div>
+
+<div class="submit-area">
+  <button type="submit" class="btn-submit">Enviar Solicitud de Formación →</button>
+  <div class="submit-note">🔒 Tu información es confidencial y segura. Nos pondremos en contacto en menos de 24 horas hábiles.</div>
+</div>
+
+</form>
+
+<!-- SUCCESS -->
+<div class="success-screen" id="success-screen">
+  <div class="success-icon">🎉</div>
+  <h2>¡Solicitud Recibida!</h2>
+  <p>Hemos recibido tu información. Un especialista de Alved Financial Group se pondrá en contacto contigo en menos de <strong>24 horas hábiles</strong>.</p>
+  <div class="success-steps">
+    <h3>📋 Próximos Pasos</h3>
+    <ol>
+      <li>Recibirás un email de confirmación en breve</li>
+      <li>Un especialista te contactará para coordinar el pago</li>
+      <li>Agendaremos tu sesión de asesoría (paquetes Premium y VIP)</li>
+      <li>Iniciamos el proceso de formación con el estado</li>
+      <li>¡Tu empresa estará lista en 5–15 días hábiles!</li>
+    </ol>
+  </div>
+  <div style="margin-top:24px">
+    <a href="alved-company-formation.html" style="color:var(--purple);font-weight:600;font-size:.88rem">← Volver a la página principal</a>
+    &nbsp;·&nbsp;
+    <a href="https://wa.me/13053052194" target="_blank" style="color:#25D366;font-weight:600;font-size:.88rem">💬 Escríbenos por WhatsApp</a>
+  </div>
+</div>
+
+</div><!-- /form-wrap -->
+
+<!-- WA -->
+<a href="https://wa.me/13053052194?text=Hola%2C%20tengo%20preguntas%20sobre%20la%20formaci%C3%B3n%20de%20mi%20compa%C3%B1%C3%ADa"
+   target="_blank" class="wa-btn">
+  <div class="wa-tooltip">¿Tienes dudas? Escríbenos</div>
+  <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+    <path d="M16 .5C7.44.5.5 7.44.5 16c0 2.83.74 5.49 2.04 7.8L.5 31.5l7.93-2.08A15.45 15.45 0 0016 31.5C24.56 31.5 31.5 24.56 31.5 16S24.56.5 16 .5zm7.85 21.57c-.33.93-1.93 1.78-2.65 1.9-.68.11-1.54.16-2.49-.16-.57-.19-1.31-.44-2.25-.86-3.96-1.71-6.55-5.7-6.75-5.97-.2-.27-1.63-2.17-1.63-4.14 0-1.97 1.03-2.94 1.4-3.34.37-.4.8-.5 1.07-.5.27 0 .54 0 .77.01.25.01.58-.1.91.69.33.8 1.13 2.77 1.23 2.97.1.2.17.43.03.7-.13.27-.2.43-.4.67-.2.23-.42.52-.6.7-.2.2-.4.4-.17.79.23.38 1.03 1.7 2.21 2.76 1.52 1.35 2.8 1.77 3.19 1.97.38.2.6.17.82-.1.23-.27.97-1.13 1.23-1.52.27-.38.53-.32.9-.19.37.13 2.33 1.1 2.73 1.3.4.2.67.3.77.47.1.17.1.97-.23 1.9z"/>
+  </svg>
+</a>
+
+<script>
+// ══════════════════════════════════════════════════════
+//  CONFIGURACIÓN
+// ══════════════════════════════════════════════════════
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbypnOwCHxQYUnEQblX6bGFPUAfaHKC0YjV5xUV-zsi79ybr5iXwTeNR8VtOn83DZoT3iQ/exec";
+const FORMSPREE_URL   = "TU_URL_FORMSPREE";
+
+// ── PRECIOS DE PAQUETES ─────────────────────────────
+const PKG_PRICES = { basic: 247, premium: 397, vip: 997 };
+let selectedPkg = null;
+
+// ── TARIFAS ESTATALES ───────────────────────────────
+const STATE_FEES = {
+  "Florida":        { LLC: 125, Corporation: 70,  Nonprofit: 70 },
+  "Texas":          { LLC: 300, Corporation: 300, Nonprofit: 25 },
+  "New York":       { LLC: 200, Corporation: 125, Nonprofit: 75 },
+  "California":     { LLC: 70,  Corporation: 100, Nonprofit: 30 },
+  "Georgia":        { LLC: 100, Corporation: 100, Nonprofit: 30 },
+  "Nevada":         { LLC: 75,  Corporation: 75,  Nonprofit: 50 },
+  "Wyoming":        { LLC: 100, Corporation: 100, Nonprofit: 25 },
+  "Delaware":       { LLC: 90,  Corporation: 89,  Nonprofit: 89 },
+  "Illinois":       { LLC: 150, Corporation: 150, Nonprofit: 50 },
+  "North Carolina": { LLC: 125, Corporation: 125, Nonprofit: 60 },
+  "New Jersey":     { LLC: 125, Corporation: 125, Nonprofit: 75 },
+  "Virginia":       { LLC: 100, Corporation: 75,  Nonprofit: 75 },
+  "Arizona":        { LLC: 50,  Corporation: 60,  Nonprofit: 40 },
+  "Colorado":       { LLC: 50,  Corporation: 50,  Nonprofit: 50 },
+  "Washington":     { LLC: 200, Corporation: 200, Nonprofit: 30 }
+};
+
+// ── TÍTULOS POR TIPO DE ENTIDAD ─────────────────────
+const TITLE_OPTIONS = {
+  LLC:         ["Managing Member","Member","Manager","CEO (Manager)","President","Registered Agent"],
+  Corporation: ["President (CEO)","Vice President (VP)","Secretary","Treasurer","Director","Chief Financial Officer (CFO)","Chairman"],
+  Nonprofit:   ["Executive Director","Director de Junta (Board Director)","Presidente","Vice Presidente","Secretario/a","Tesorero/a"],
+  Consulta:    ["Por definir — en asesoría"]
+};
+
+// ── NAICS DATA ──────────────────────────────────────
+const NAICS_DATA = [
+  { code:"311811", label:"Panaderías y Pastelerías" },
+  { code:"423690", label:"Distribución y Mayorista de Productos" },
+  { code:"441110", label:"Concesionarios de Automóviles" },
+  { code:"452910", label:"Tiendas de Descuento y Liquidación" },
+  { code:"453991", label:"Tiendas de Regalos y Souvenirs" },
+  { code:"454110", label:"Comercio Electrónico / E-commerce" },
+  { code:"484110", label:"Transporte y Mudanzas" },
+  { code:"492110", label:"Mensajería y Entrega de Paquetes" },
+  { code:"493110", label:"Almacenamiento y Bodegas / Storage" },
+  { code:"519130", label:"Blogs, Podcasts y Medios en Línea" },
+  { code:"522390", label:"Servicios Financieros / Prestamistas" },
+  { code:"523130", label:"Corredores de Inversiones / Trading" },
+  { code:"524210", label:"Agencias de Seguros" },
+  { code:"531110", label:"Arrendamiento de Propiedades Residenciales" },
+  { code:"531120", label:"Arrendamiento de Propiedades Comerciales" },
+  { code:"531210", label:"Agencias de Bienes Raíces / Real Estate" },
+  { code:"541110", label:"Servicios Legales / Abogacía" },
+  { code:"541211", label:"Contabilidad y Teneduría de Libros" },
+  { code:"541213", label:"Preparación de Impuestos / Tax Prep" },
+  { code:"541310", label:"Servicios de Arquitectura" },
+  { code:"541330", label:"Ingeniería y Consultoría Técnica" },
+  { code:"541511", label:"Desarrollo de Software / Apps" },
+  { code:"541512", label:"Diseño de Sistemas Informáticos / IT" },
+  { code:"541613", label:"Consultoría de Marketing y Negocios" },
+  { code:"541714", label:"Investigación y Desarrollo Tecnológico" },
+  { code:"541810", label:"Agencias de Publicidad y Medios" },
+  { code:"541990", label:"Consultoría Empresarial General" },
+  { code:"561110", label:"Servicios Administrativos de Oficina" },
+  { code:"561320", label:"Agencias de Empleo / Staffing" },
+  { code:"561421", label:"Call Centers y Servicio al Cliente" },
+  { code:"561499", label:"Servicios de Apoyo al Negocio" },
+  { code:"561720", label:"Limpieza y Mantenimiento / Cleaning" },
+  { code:"561730", label:"Jardinería / Landscaping" },
+  { code:"611110", label:"Escuelas y Academias Privadas" },
+  { code:"611630", label:"Instrucción Deportiva / Coaching" },
+  { code:"611699", label:"Tutorías y Educación Privada" },
+  { code:"621111", label:"Consultorios Médicos / Salud" },
+  { code:"621210", label:"Consultorios Dentales" },
+  { code:"621330", label:"Salud Mental y Psicología" },
+  { code:"621399", label:"Servicios de Salud y Bienestar" },
+  { code:"621610", label:"Servicios de Enfermería en el Hogar" },
+  { code:"623312", label:"Asistencia para Personas con Discapacidad" },
+  { code:"624120", label:"Servicios para Adultos Mayores / Elderly" },
+  { code:"624310", label:"Capacitación Vocacional y Educativa" },
+  { code:"713940", label:"Gimnasios y Centros de Fitness" },
+  { code:"711510", label:"Artistas y Entretenimiento / Eventos" },
+  { code:"721110", label:"Hoteles y Alojamientos / Airbnb" },
+  { code:"722330", label:"Camiones de Comida / Food Trucks" },
+  { code:"722511", label:"Restaurantes de Servicio Completo" },
+  { code:"722513", label:"Comida Rápida y Cafeterías" },
+  { code:"812111", label:"Salones de Belleza / Barberías" },
+  { code:"812112", label:"Nail Salons / Estética" },
+  { code:"812310", label:"Lavanderías y Tintorería" },
+  { code:"812910", label:"Servicios de Mascotas / Pet Grooming" },
+  { code:"236115", label:"Construcción de Viviendas / General Contractor" },
+  { code:"236220", label:"Construcción Comercial e Industrial" },
+  { code:"238110", label:"Plomería / Plumbing" },
+  { code:"238210", label:"Electricidad / Electrical" },
+  { code:"238220", label:"Aire Acondicionado / HVAC" },
+  { code:"813110", label:"Iglesias y Organizaciones Religiosas" },
+  { code:"813212", label:"Fundaciones Benéficas / Nonprofit" },
+  { code:"813319", label:"ONGs y Organizaciones Sin Fines de Lucro" }
+];
+
+let naicsSelected = [];
+
+// ══════════════════════════════════════════════════════
+//  PACKAGE DETAILS DATA
+// ══════════════════════════════════════════════════════
+const PKG_DETAILS = {
+  basic: {
+    name: 'Paquete Básico',
+    price: '$247 + fee estatal',
+    bg: 'linear-gradient(135deg,#1A1F6B,#3D2DB5)',
+    items: [
+      { ok:true,  text:'Formación de la compañía con el estado' },
+      { ok:true,  text:'Búsqueda de disponibilidad del nombre' },
+      { ok:true,  text:'EIN (Federal Tax ID) con el IRS' },
+      { ok:true,  text:'Operating Agreement (template estándar)' },
+      { ok:true,  text:'Certificado de formación digital' },
+      { ok:true,  text:'Soporte por WhatsApp / Email' },
+      { ok:false, text:'Sin asesoría personalizada' },
+      { ok:false, text:'Sin sesiones de seguimiento' },
+      { ok:false, text:'Renovación no incluida' }
+    ]
+  },
+  premium: {
+    name: 'Paquete Premium ⭐',
+    price: '$397 + fee estatal',
+    bg: 'linear-gradient(135deg,#1A73E8,#6C47FF)',
+    items: [
+      { ok:true, text:'Todo lo del plan Básico' },
+      { ok:true, text:'1 hora de asesoría personalizada' },
+      { ok:true, text:'Estructuración según tipo de negocio' },
+      { ok:true, text:'Operating Agreement personalizado' },
+      { ok:true, text:'Agente Registrado (1er año incluido)' },
+      { ok:true, text:'Check-in a los 2 meses de apertura' },
+      { ok:true, text:'Sesión de Estrategia Fiscal (Q4)' },
+      { ok:true, text:'Renovación año 1 incluida' },
+      { ok:true, text:'Renovaciones futuras: $50 + fee estado' }
+    ]
+  },
+  vip: {
+    name: 'Paquete VIP',
+    price: '$997 + fee estatal',
+    bg: 'linear-gradient(135deg,#1A1F6B,#6B4500)',
+    items: [
+      { ok:true, text:'Todo lo del plan Premium' },
+      { ok:true, text:'Logo profesional a medida' },
+      { ok:true, text:'Landing page con formularios y calendario' },
+      { ok:true, text:'Dominio + hosting incluido (1 año)' },
+      { ok:true, text:'Perfil Instagram con branding profesional' },
+      { ok:true, text:'Google Business Profile (Google Maps)' },
+      { ok:true, text:'Renovaciones futuras: $50 + fee estado' }
+    ]
+  }
+};
+
+// ══════════════════════════════════════════════════════
+//  PACKAGE SELECTION
+// ══════════════════════════════════════════════════════
+function selectPkg(type) {
+  selectedPkg = type;
+  document.querySelectorAll('.pkg-opt').forEach(el => el.classList.remove('selected'));
+  document.getElementById('opt-' + type).classList.add('selected');
+  const labels = { basic:'Básico $247', premium:'Premium $397', vip:'VIP $997' };
+  document.getElementById('pkg-badge-txt').textContent = '📦 Paquete: ' + labels[type] + ' + fee estatal';
+  markStep(1);
+  updateEstimate();
+  showPkgDetail(type);
+}
+
+function showPkgDetail(type) {
+  const d     = PKG_DETAILS[type];
+  const panel = document.getElementById('pkg-detail');
+  const hdr   = document.getElementById('pkg-detail-header');
+  const body  = document.getElementById('pkg-detail-items');
+  hdr.style.background = d.bg;
+  hdr.innerHTML = '<div class="pd-name">' + d.name + '</div>' +
+    '<div class="pd-price">' + d.price + '</div>';
+  body.innerHTML = d.items.map(i =>
+    '<div class="pkg-item' + (i.ok ? '' : ' dim') + '">' +
+    '<span class="' + (i.ok ? 'pi-ck' : 'pi-xx') + '">' + (i.ok ? '✓' : '✗') + '</span>' +
+    '<span>' + i.text + '</span></div>'
+  ).join('');
+  panel.classList.add('show');
+}
+
+// ══════════════════════════════════════════════════════
+//  ESTIMATE CALCULATOR
+// ══════════════════════════════════════════════════════
+function updateEstimate() {
+  const entity   = document.getElementById('entity_type').value;
+  const state    = document.getElementById('state_select').value;
+  const scorp    = document.getElementById('scorp_cb').checked;
+  const banner   = document.getElementById('estimate-banner');
+
+  if (!selectedPkg || !entity || !state || entity === 'Consulta' || state === 'Otro') {
+    banner.classList.remove('show'); return;
+  }
+
+  const pkgPrice  = PKG_PRICES[selectedPkg] || 0;
+  const stFees    = STATE_FEES[state];
+  const entityKey = entity; // LLC, Corporation, Nonprofit
+  const stateFee  = stFees ? (stFees[entityKey] || null) : null;
+  const scorpFee  = scorp ? 97 : 0;
+
+  if (stateFee === null) { banner.classList.remove('show'); return; }
+
+  const total = pkgPrice + stateFee + scorpFee;
+
+  const pkgLabels  = { basic:'Básico $247', premium:'Premium $397', vip:'VIP $997' };
+  const scorpLabel = scorp ? ' + S-Corp $97' : '';
+
+  document.getElementById('est-total').textContent = '$' + total.toLocaleString();
+  document.getElementById('est-break').textContent =
+    'Paquete ' + pkgLabels[selectedPkg] + ' + Fee ' + state + ' $' + stateFee + scorpLabel;
+  banner.classList.add('show');
+}
+
+// ══════════════════════════════════════════════════════
+//  TITLE OPTIONS BY ENTITY
+// ══════════════════════════════════════════════════════
+function updateTitleOptions() {
+  const entity = document.getElementById('entity_type').value;
+  updateOwnerTitleSelect('owner1_title', entity);
+}
+
+function updateOwnerTitleSelect(selectId, entity) {
+  const sel = document.getElementById(selectId);
+  if (!sel) return;
+  const opts = TITLE_OPTIONS[entity] || [];
+  sel.innerHTML = '<option value="">— Selecciona —</option>';
+  opts.forEach(t => {
+    const o = document.createElement('option');
+    o.value = t; o.textContent = t;
+    sel.appendChild(o);
+  });
+}
+
+// ══════════════════════════════════════════════════════
+//  SSN / ITIN / PASSPORT DETECTION
+// ══════════════════════════════════════════════════════
+function detectIdType(input, badgeId, hintId) {
+  const val  = input.value.replace(/[^0-9a-zA-Z]/g, '');
+  const badge = document.getElementById(badgeId);
+  const hint  = document.getElementById(hintId);
+
+  badge.className = 'id-badge';
+
+  if (/^\d+$/.test(val)) {
+    if (val.length < 9) {
+      input.classList.remove('is-valid','is-invalid');
+      hint.textContent = val.length + ' de 9 dígitos requeridos.';
+      hint.className = 'hint';
+    } else if (val.length === 9) {
+      input.classList.add('is-valid'); input.classList.remove('is-invalid');
+      if (val[0] === '9') {
+        badge.textContent = 'ITIN detectado'; badge.classList.add('itin');
+        hint.textContent  = 'ITIN válido (comienza con 9).';
+      } else {
+        badge.textContent = 'SSN detectado'; badge.classList.add('ssn');
+        hint.textContent  = 'SSN válido.';
+      }
+      hint.className = 'hint ok';
+    } else {
+      input.classList.add('is-invalid'); input.classList.remove('is-valid');
+      hint.textContent = 'SSN/ITIN debe tener exactamente 9 dígitos.';
+      hint.className = 'hint err';
+    }
+  } else if (val.length > 0) {
+    badge.textContent = 'Pasaporte'; badge.classList.add('pass');
+    input.classList.add('is-valid'); input.classList.remove('is-invalid');
+    hint.textContent  = 'Número de pasaporte registrado.';
+    hint.className    = 'hint ok';
+  } else {
+    input.classList.remove('is-valid','is-invalid');
+    hint.textContent = 'SSN/ITIN: exactamente 9 dígitos. Pasaporte: letras y números.';
+    hint.className   = 'hint';
+  }
+}
+
+// ══════════════════════════════════════════════════════
+//  ADDRESS VALIDATIONS
+// ══════════════════════════════════════════════════════
+function validateApt2(inputId, hintId) {
+  const val  = document.getElementById(inputId).value.trim();
+  const hint = document.getElementById(hintId);
+  if (!hint) return;
+  if (val.length > 0 && val.length < 2) {
+    hint.textContent  = 'Por favor completa el número de apartamento/unidad.';
+    hint.className    = 'hint err';
+  } else if (val.length >= 2) {
+    hint.textContent  = 'Unidad confirmada: ' + val;
+    hint.className    = 'hint ok';
+  } else {
+    hint.textContent  = '';
+    hint.className    = 'hint';
+  }
+}
+
+function validateZip(input) {
+  const val = input.value.replace(/[^0-9-]/g,'');
+  input.value = val;
+  if (/^\d{5}(-\d{4})?$/.test(val)) {
+    input.classList.add('is-valid'); input.classList.remove('is-invalid');
+  } else if (val.length > 0) {
+    input.classList.add('is-invalid'); input.classList.remove('is-valid');
+  } else {
+    input.classList.remove('is-valid','is-invalid');
+  }
+}
+
+// ══════════════════════════════════════════════════════
+//  MAILING ADDRESS TOGGLE
+// ══════════════════════════════════════════════════════
+function toggleMailing() {
+  const chk = document.getElementById('same_mailing');
+  document.getElementById('mailing-block').style.display = chk.checked ? 'none' : 'block';
+}
+
+// ══════════════════════════════════════════════════════
+//  CONTACT TYPE
+// ══════════════════════════════════════════════════════
+function selectContactAs(type) {
+  document.querySelectorAll('.cs-opt').forEach(el => el.classList.remove('selected'));
+  document.getElementById('cs-' + type).classList.add('selected');
+  document.getElementById('third-party-block').style.display = type === 'third' ? 'block' : 'none';
+}
+
+// ══════════════════════════════════════════════════════
+//  REGISTERED AGENT
+// ══════════════════════════════════════════════════════
+function selectRA(type) {
+  document.querySelectorAll('.ra-opt').forEach(el => el.classList.remove('selected'));
+  document.getElementById('ra-' + type).classList.add('selected');
+}
+
+// ══════════════════════════════════════════════════════
+//  NAICS SELECTOR
+// ══════════════════════════════════════════════════════
+function filterNAICS(q) {
+  const dd    = document.getElementById('naics-dropdown');
+  const items = q.trim().length === 0
+    ? NAICS_DATA
+    : NAICS_DATA.filter(n => n.label.toLowerCase().includes(q.toLowerCase()) || n.code.includes(q));
+
+  dd.innerHTML = '';
+  items.slice(0, 40).forEach(n => {
+    const alreadySelected = naicsSelected.some(s => s.code === n.code);
+    const maxed = naicsSelected.length >= 2 && !alreadySelected;
+    const div = document.createElement('div');
+    div.className = 'naics-item' + (maxed ? ' disabled' : '');
+    div.innerHTML = '<span>' + n.label + '</span><span class="naics-code">' + n.code + '</span>';
+    if (!maxed) {
+      div.onmousedown = (e) => { e.preventDefault(); addNAICS(n); };
+    }
+    dd.appendChild(div);
+  });
+  dd.classList.add('open');
+}
+
+function openNAICS() {
+  filterNAICS(document.getElementById('naics-search').value);
+}
+
+function closeNAICSDelay() {
+  setTimeout(() => document.getElementById('naics-dropdown').classList.remove('open'), 180);
+}
+
+function addNAICS(n) {
+  if (naicsSelected.length >= 2) return;
+  if (naicsSelected.some(s => s.code === n.code)) return;
+  naicsSelected.push(n);
+  renderNAICSTags();
+  document.getElementById('naics-search').value = '';
+  document.getElementById('naics-dropdown').classList.remove('open');
+  updateNAICSHidden();
+}
+
+function removeNAICS(code) {
+  naicsSelected = naicsSelected.filter(s => s.code !== code);
+  renderNAICSTags();
+  updateNAICSHidden();
+}
+
+function renderNAICSTags() {
+  const cont = document.getElementById('naics-tags');
+  cont.innerHTML = naicsSelected.map(n =>
+    '<div class="naics-tag"><span>' + n.label + ' · ' + n.code + '</span>' +
+    '<span class="naics-rm" onmousedown="removeNAICS(\'' + n.code + '\')">×</span></div>'
+  ).join('');
+}
+
+function updateNAICSHidden() {
+  document.getElementById('business_naics_hidden').value =
+    naicsSelected.map(n => n.label + ' [' + n.code + ']').join(' | ');
+}
+
+// ══════════════════════════════════════════════════════
+//  ADD / REMOVE OWNERS
+// ══════════════════════════════════════════════════════
+let ownerCount = 1;
+
+function addOwner() {
+  ownerCount++;
+  const n   = ownerCount;
+  const div = document.createElement('div');
+  div.className = 'owner-block';
+  div.id        = 'owner-' + n;
+
+  const entity = document.getElementById('entity_type').value;
+  const titleOpts = (TITLE_OPTIONS[entity] || []).map(t => '<option>' + t + '</option>').join('');
+
+  div.innerHTML = `
+    <div class="owner-block-title">
+      <span>👤 Socio / Co-propietario ${n}</span>
+      <button type="button" class="rm-owner" onclick="removeOwner(${n})">✕ Eliminar</button>
+    </div>
+    <div class="form-grid" style="gap:12px">
+      <div class="field"><label>Primer Nombre</label><input type="text" name="owner${n}_first" placeholder="Nombre"></div>
+      <div class="field"><label>Segundo Nombre <span class="opt">(si aplica)</span></label><input type="text" name="owner${n}_middle" placeholder="Middle name"></div>
+      <div class="field"><label>Apellido(s)</label><input type="text" name="owner${n}_last" placeholder="Apellido"></div>
+      <div class="field"><label>% de Participación</label><input type="text" name="owner${n}_pct" placeholder="Ej: 40%"></div>
+      <div class="field"><label>Título / Cargo</label>
+        <select name="owner${n}_title"><option value="">— Selecciona —</option>${titleOpts}</select></div>
+      <div class="field"><label>SSN / ITIN / Pasaporte</label>
+        <input type="text" name="owner${n}_id" id="owner${n}_id" placeholder="9 dígitos o pasaporte" maxlength="20"
+               oninput="detectIdType(this,'owner${n}_id_badge','owner${n}_id_hint')">
+        <span class="id-badge" id="owner${n}_id_badge"></span>
+        <span class="hint" id="owner${n}_id_hint">SSN/ITIN: exactamente 9 dígitos.</span></div>
+      <div class="field"><label>Fecha de Nacimiento</label><input type="date" name="owner${n}_dob"></div>
+      <div class="field"><label>Estatus Migratorio</label>
+        <select name="owner${n}_usstatus">
+          <option value="">— Selecciona —</option>
+          <option>Ciudadano americano</option>
+          <option>Residente permanente (Green Card)</option>
+          <option>Visa de trabajo (H1B, L1, O1, TN)</option>
+          <option>Visa de estudiante (F1 / OPT)</option>
+          <option>Visa de inversionista (E2 / EB-5)</option>
+          <option>Visa de turista / visitante (B1/B2)</option>
+          <option>Sin estatus migratorio / ITIN holder</option>
+          <option>Otro</option>
+        </select></div>
+      <div class="field"><label>Teléfono</label><input type="tel" name="owner${n}_phone" placeholder="+1 (000) 000-0000"></div>
+    </div>
+    <div style="margin-top:14px">
+      <div class="addr-block">
+        <div class="addr-title">🏠 Dirección Residencial</div>
+        <div class="form-grid c1" style="gap:10px">
+          <div class="field"><label>País</label><input type="text" name="owner${n}_country" value="USA" placeholder="USA, Colombia..."></div>
+          <div class="field"><label>Dirección (Línea 1)</label><input type="text" name="owner${n}_addr1" placeholder="Calle y número"></div>
+          <div class="field"><label>Apt / Unidad <span class="opt">(si aplica)</span></label>
+            <input type="text" name="owner${n}_addr2" id="owner${n}_addr2" placeholder="Ej: Apt 3A"
+                   oninput="validateApt2('owner${n}_addr2','owner${n}_addr2_hint')">
+            <span class="hint" id="owner${n}_addr2_hint"></span></div>
+          <div class="form-grid c3" style="gap:10px;margin:0">
+            <div class="field"><label>Ciudad</label><input type="text" name="owner${n}_city" placeholder="Ciudad"></div>
+            <div class="field"><label>Estado</label>
+              <select name="owner${n}_state_addr">
+                <option value="">—</option>
+                <option>AL</option><option>AK</option><option>AZ</option><option>AR</option><option>CA</option>
+                <option>CO</option><option>CT</option><option>DE</option><option>FL</option><option>GA</option>
+                <option>HI</option><option>ID</option><option>IL</option><option>IN</option><option>IA</option>
+                <option>KS</option><option>KY</option><option>LA</option><option>ME</option><option>MD</option>
+                <option>MA</option><option>MI</option><option>MN</option><option>MS</option><option>MO</option>
+                <option>MT</option><option>NE</option><option>NV</option><option>NH</option><option>NJ</option>
+                <option>NM</option><option>NY</option><option>NC</option><option>ND</option><option>OH</option>
+                <option>OK</option><option>OR</option><option>PA</option><option>RI</option><option>SC</option>
+                <option>SD</option><option>TN</option><option>TX</option><option>UT</option><option>VT</option>
+                <option>VA</option><option>WA</option><option>WV</option><option>WI</option><option>WY</option>
+                <option value="N/A">N/A</option>
+              </select></div>
+            <div class="field"><label>ZIP Code</label>
+              <input type="text" name="owner${n}_zip" id="owner${n}_zip" placeholder="00000" maxlength="10" oninput="validateZip(this)"></div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  document.getElementById('owners-container').appendChild(div);
+}
+
+function removeOwner(n) {
+  const el = document.getElementById('owner-' + n);
+  if (el) el.remove();
+}
+
+// ══════════════════════════════════════════════════════
+//  PROGRESS BAR
+// ══════════════════════════════════════════════════════
+function markStep(step) {
+  for (let i = 1; i < step; i++) {
+    document.getElementById('sp' + i).className = 'step-pill done';
+    if (document.getElementById('sc' + i)) document.getElementById('sc' + i).className = 'step-conn done';
+  }
+  document.getElementById('sp' + step).className = 'step-pill active';
+  for (let i = step + 1; i <= 4; i++) {
+    document.getElementById('sp' + i).className = 'step-pill';
+  }
+}
+
+// ══════════════════════════════════════════════════════
+//  URL PARAM AUTO-SELECT
+// ══════════════════════════════════════════════════════
+window.addEventListener('DOMContentLoaded', () => {
+  const params = new URLSearchParams(window.location.search);
+  const pkg    = params.get('pkg');
+  if (pkg === 'basico')  { document.querySelector('[value="Básico - $247"]').checked = true; selectPkg('basic'); }
+  if (pkg === 'premium') { document.querySelector('[value="Premium - $397"]').checked = true; selectPkg('premium'); }
+  if (pkg === 'vip')     { document.querySelector('[value="VIP - $997"]').checked = true; selectPkg('vip'); }
+
+  // Pkg opt click handlers
+  document.querySelectorAll('.pkg-opt').forEach(el => {
+    el.addEventListener('click', () => {
+      const v = el.querySelector('input').value;
+      if (v.includes('247')) selectPkg('basic');
+      else if (v.includes('397')) selectPkg('premium');
+      else if (v.includes('997')) selectPkg('vip');
+    });
+  });
+});
+
+// ══════════════════════════════════════════════════════
+//  SUBMIT
+// ══════════════════════════════════════════════════════
+async function submitForm(e) {
+  e.preventDefault();
+
+  const pkg = document.querySelector('input[name="package"]:checked');
+  if (!pkg) { alert('Por favor selecciona un paquete para continuar.'); return; }
+
+  if (naicsSelected.length === 0) {
+    alert('Por favor selecciona al menos un tipo de negocio (actividad principal).');
+    document.getElementById('naics-search').focus(); return;
+  }
+
+  const form = document.getElementById('formation-form');
+  const fd   = new FormData(form);
+  const data = {};
+  fd.forEach((val, key) => { data[key] = val; });
+
+  // Agregar NAICS seleccionados
+  data.business_naics = document.getElementById('business_naics_hidden').value;
+
+  // Estimate total
+  const entity  = document.getElementById('entity_type').value;
+  const state   = document.getElementById('state_select').value;
+  const stFees  = STATE_FEES[state];
+  const stateFee = stFees ? (stFees[entity] || 0) : 0;
+  const pkgPrice = PKG_PRICES[selectedPkg] || 0;
+  const scorpFee = data.scorp_addon ? 97 : 0;
+  data.estimate_total = '$' + (pkgPrice + stateFee + scorpFee).toLocaleString();
+  data.state_fee = '$' + stateFee;
+
+  const btn = form.querySelector('.btn-submit');
+  btn.textContent = 'Enviando...';
+  btn.disabled    = true;
+
+  const sends = [];
+
+  if (APPS_SCRIPT_URL && !APPS_SCRIPT_URL.includes('TU_URL')) {
+    sends.push(fetch(APPS_SCRIPT_URL, {
+      method: 'POST', headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify(data), mode: 'no-cors'
+    }).catch(() => null));
+  }
+
+  if (FORMSPREE_URL && !FORMSPREE_URL.includes('TU_URL')) {
+    sends.push(fetch(FORMSPREE_URL, {
+      method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(data)
+    }).catch(() => null));
+  }
+
+  if (sends.length > 0) {
+    await Promise.race([Promise.allSettled(sends), new Promise(r => setTimeout(r, 8000))]);
+  }
+
+  form.style.display = 'none';
+  document.getElementById('success-screen').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
