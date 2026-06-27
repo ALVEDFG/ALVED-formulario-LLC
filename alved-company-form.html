@@ -645,7 +645,7 @@
     <label>Tipo de Negocio / Actividad Principal <span class="req">*</span> <span class="opt">(máx. 2 opciones)</span></label>
     <div class="naics-wrap">
       <input type="text" id="naics-search" class="naics-input" placeholder="Busca tu tipo de negocio (ej: restaurante, construcción, consultoría...)"
-             autocomplete="off" oninput="filterNAICS(this.value)" onfocus="openNAICS()" onblur="closeNAICSDelay()">
+             autocomplete="off" oninput="filterNAICS(this.value)" onfocus="openNAICS()">
       <div class="naics-dropdown" id="naics-dropdown"></div>
     </div>
     <div class="naics-tags" id="naics-tags"></div>
@@ -1643,8 +1643,8 @@ function filterNAICS(q) {
     div.className = 'naics-item' + (maxed ? ' disabled' : '');
     div.innerHTML = '<span>' + n.label + '</span><span class="naics-code">' + n.code + '</span>';
     if (!maxed) {
-      div.onmousedown  = (e) => { e.preventDefault(); addNAICS(n); };
-      div.ontouchstart = (e) => { e.preventDefault(); addNAICS(n); };
+      div.onmousedown = (e) => { e.preventDefault(); addNAICS(n); };
+      div.addEventListener('touchend', (e) => { e.preventDefault(); e.stopPropagation(); addNAICS(n); });
     }
     dd.appendChild(div);
   });
@@ -1658,6 +1658,20 @@ function openNAICS() {
 function closeNAICSDelay() {
   setTimeout(() => document.getElementById('naics-dropdown').classList.remove('open'), 350);
 }
+
+// Cierra el dropdown NAICS al tocar/click fuera de él
+document.addEventListener('touchstart', function(e) {
+  const wrap = document.querySelector('.naics-wrap');
+  if (wrap && !wrap.contains(e.target)) {
+    document.getElementById('naics-dropdown').classList.remove('open');
+  }
+});
+document.addEventListener('mousedown', function(e) {
+  const wrap = document.querySelector('.naics-wrap');
+  if (wrap && !wrap.contains(e.target)) {
+    document.getElementById('naics-dropdown').classList.remove('open');
+  }
+});
 
 function addNAICS(n) {
   if (naicsSelected.length >= 2) return;
