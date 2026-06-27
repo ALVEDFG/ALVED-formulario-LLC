@@ -1643,7 +1643,8 @@ function filterNAICS(q) {
     div.className = 'naics-item' + (maxed ? ' disabled' : '');
     div.innerHTML = '<span>' + n.label + '</span><span class="naics-code">' + n.code + '</span>';
     if (!maxed) {
-      div.onmousedown = (e) => { e.preventDefault(); addNAICS(n); };
+      div.onmousedown  = (e) => { e.preventDefault(); addNAICS(n); };
+      div.ontouchstart = (e) => { e.preventDefault(); addNAICS(n); };
     }
     dd.appendChild(div);
   });
@@ -1655,7 +1656,7 @@ function openNAICS() {
 }
 
 function closeNAICSDelay() {
-  setTimeout(() => document.getElementById('naics-dropdown').classList.remove('open'), 180);
+  setTimeout(() => document.getElementById('naics-dropdown').classList.remove('open'), 350);
 }
 
 function addNAICS(n) {
