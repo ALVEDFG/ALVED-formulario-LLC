@@ -781,7 +781,29 @@ function renderNews(items) {
   `).join('');
 }
 
+const NEWS_CACHE_KEY = 'alved-news-cache-v1';
+const NEWS_CACHE_TTL_MS = 60 * 60 * 1000; // 1 hora
+
+function readNewsCache() {
+  try {
+    const raw = localStorage.getItem(NEWS_CACHE_KEY);
+    if (!raw) return null;
+    const { savedAt, items } = JSON.parse(raw);
+    if (!items?.length || Date.now() - savedAt > NEWS_CACHE_TTL_MS) return null;
+    return items;
+  } catch(e) { return null; }
+}
+
+function writeNewsCache(items) {
+  try {
+    localStorage.setItem(NEWS_CACHE_KEY, JSON.stringify({ savedAt: Date.now(), items }));
+  } catch(e) {}
+}
+
 async function loadNews() {
+  const cached = readNewsCache();
+  if (cached) { renderNews(cached); return; }
+
   try {
     const url = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent('https://feeds.feedburner.com/entrepreneur/latest')}&api_key=public&count=6`;
     const res = await fetch(url, { signal: AbortSignal.timeout(5000) });
@@ -796,6 +818,7 @@ async function loadNews() {
         color: '#1A1F6B'
       }));
       renderNews(mapped);
+      writeNewsCache(mapped);
       return;
     }
   } catch(e) {}
