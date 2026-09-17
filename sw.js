@@ -4,7 +4,7 @@
    Network-first para formularios y APIs
 ══════════════════════════════════════════════════ */
 
-const CACHE_NAME = 'alved-forms-v1';
+const CACHE_NAME = 'alved-forms-v2';
 
 const STATIC_ASSETS = [
   '/alved-company-form.html',
